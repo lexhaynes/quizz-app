@@ -15,8 +15,13 @@
     color: #ccc;
     cursor: default;
     pointer-events: none;
+    button {
+      opacity: 0.5;
+    }
   }
   .question_item_option {
     cursor: pointer;
   }
+  /* button {
+  } */
 }

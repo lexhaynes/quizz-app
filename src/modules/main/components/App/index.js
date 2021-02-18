@@ -6,6 +6,7 @@ import {useState} from 'react';
 
 /* TODO: 
 allow user to go back to a previous quesition
+add more questions (there should be at least 10)
 */
 
 const ProgressIndicator = ({progress}) => {
@@ -25,7 +26,7 @@ const Results = ({result}) => {
 };
 
 
-const QuestionList = ({activeQuestionIndex, saveSelection}) => {
+const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiveIndex, saveSelection}) => {
  
   return (
     <form className="question_list"> 
@@ -33,11 +34,13 @@ const QuestionList = ({activeQuestionIndex, saveSelection}) => {
       QUESTIONS.filter(question => question.heirarchy !== "primary").map( (question) => {
         return <QuestionItem
             key={`question_item_${question._id}`} 
-            id={`question_item_${question._id}`}
+            id={question._id}
             title={question.title} 
             options={question.options} 
             saveSelection={saveSelection}
             isActive={activeQuestionIndex === question._id}
+            decrementActiveIndex={decrementActiveIndex}
+            incrementActiveIndex={incrementActiveIndex}
             />       
       })
     }
@@ -45,15 +48,26 @@ const QuestionList = ({activeQuestionIndex, saveSelection}) => {
   );
 }
 
-const QuestionItem = ({id, title, options, saveSelection, isActive}) => {
+const QuestionItem = ({id, title, options, saveSelection, isActive, decrementActiveIndex, incrementActiveIndex}) => {
   
-  const handleClick = (e) => {
+  const handleOptionSelect = (e) => {
     saveSelection(
       id,
       e.target.title,
       e.target.value,
     );
   }
+
+  const handleButtonClick = (e) => {
+    const direction = e.target.dataset.direction;
+    if (direction === "back") {
+      decrementActiveIndex()
+    } else {
+      incrementActiveIndex();
+    } 
+    e.preventDefault();
+  }
+
 
   return (
     <div className="question_item" data-isactive={isActive}>
@@ -65,7 +79,7 @@ const QuestionItem = ({id, title, options, saveSelection, isActive}) => {
               <input 
                 className="question_item_option" 
                 id={`question_item_option_${i}`} 
-                onClick={handleClick}
+                onClick={handleOptionSelect}
                 type="radio"
                 name={title}
                 value={opt.weight}
@@ -74,9 +88,22 @@ const QuestionItem = ({id, title, options, saveSelection, isActive}) => {
                 <label htmlFor={`question_item_option_${i}`}>{opt.title}</label>
             </React.Fragment>
           )
-      
         })
       }
+      <div className="button-wrapper">
+      {
+        id !== 0 
+          ?  <button data-direction="back" onClick={handleButtonClick}>Go back</button> 
+          : ""
+      }
+      {
+        id !== QUESTIONS.length - 2
+        ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
+        : ""
+      }
+       
+       
+      </div>
     </div>
   )
 };
@@ -96,15 +123,30 @@ const App = () => {
   */
 
   /*
-    updateSelection: update the state with the user's selection
+    incrementActiveIndex: increment current active question
   */
-  const updateSelection = (question_id, selected_title, selected_weight) => {
-    //update active question index
+  const incrementActiveIndex = () => {
     if (Object.keys(selections).length === QUESTIONS.length - 1) { //if user has selected all options, set currentActiveIndex to the last question
       setCurrentActiveIndex(QUESTIONS.length - 1);
     } else { //assume active question is the NEXT question
       setCurrentActiveIndex(prevState => prevState + 1);
     }
+  }
+
+  /*
+    decrementActiveIndex: decrement current active question
+  */
+  const decrementActiveIndex = () => {
+    //assume active question is the PREV question
+    setCurrentActiveIndex(prevState => prevState - 1);
+  }
+
+  /*
+    updateSelection: update the state with the user's selection
+  */
+  const updateSelection = (question_id, selected_title, selected_weight) => {
+    //increment active index
+    incrementActiveIndex();
 
     //update selections state
     setSelections(prevState => {
@@ -163,7 +205,12 @@ const App = () => {
   return (
     <>
       <ProgressIndicator progress={calcProgress()} />
-      <QuestionList activeQuestionIndex={currentActiveIndex} saveSelection={updateSelection} />
+      <QuestionList 
+        activeQuestionIndex={currentActiveIndex}
+        decrementActiveIndex={decrementActiveIndex} 
+        incrementActiveIndex={incrementActiveIndex} 
+        saveSelection={updateSelection} 
+        />
       <Results result={interpretScore()}/>
     </>
   );
