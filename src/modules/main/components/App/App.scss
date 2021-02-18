@@ -1,0 +1,22 @@
+.App {
+  .logo {
+    border: solid red 1px;
+  }
+}
+
+.question_item {
+  &[data-isactive="true"] {
+    border: solid red 1px;
+    cursor: pointer;
+    pointer-events: auto;
+    color: #000;
+  }
+  &[data-isactive="false"] {
+    color: #ccc;
+    cursor: default;
+    pointer-events: none;
+  }
+  .question_item_option {
+    cursor: pointer;
+  }
+}

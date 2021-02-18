@@ -1,0 +1,180 @@
+[
+    {
+        "heirarchy": "primary",
+        "title": "What book (written by a Black author) should I read based on my mood?"
+    },
+    {
+        "_id": 0,
+        "heirarchy": "secondary",
+        "title": "Pick a color",
+        "options": [
+            {
+                "title": "red",
+                "weight": 10
+            },
+            {
+                "title": "pink",
+                "weight": 7
+            },
+            {
+                "title": "orange",
+                "weight": 9
+            },
+            {
+                "title": "yellow",
+                "weight": 10
+            },
+            {
+                "title": "green",
+                "weight": 7
+            },
+            {
+                "title": "blue",
+                "weight": 6
+            },
+            {
+                "title": "purple",
+                "weight": 6
+            },
+            {
+                "title": "grey",
+                "weight": 5
+            },
+            {
+                "title": "black",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "_id": 1,
+        "heirarchy": "secondary",
+        "title": "Pick an animal",
+        "options": [
+            {
+                "title": "dragon",
+                "weight": 10
+            },
+            {
+                "title": "horse",
+                "weight": 7
+            },
+            {
+                "title": "eagle",
+                "weight": 9
+            },
+            {
+                "title": "lion",
+                "weight": 10
+            },
+            {
+                "title": "fox",
+                "weight": 7
+            },
+            {
+                "title": "dolphin",
+                "weight": 6
+            },
+            {
+                "title": "shark",
+                "weight": 6
+            },
+            {
+                "title": "wild dog",
+                "weight": 5
+            },
+            {
+                "title": "crow",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "_id": 2,
+        "heirarchy": "secondary",
+        "title": "Pick a locale",
+        "options": [
+            {
+                "title": "the beach",
+                "weight": 10
+            },
+            {
+                "title": "the woods",
+                "weight": 7
+            },
+            {
+                "title": "an old forest",
+                "weight": 9
+            },
+            {
+                "title": "a flowery meadow",
+                "weight": 10
+            },
+            {
+                "title": "a waterfall",
+                "weight": 7
+            },
+            {
+                "title": "the desert",
+                "weight": 6
+            },
+            {
+                "title": "the arctic tundra",
+                "weight": 6
+            },
+            {
+                "title": "a farm",
+                "weight": 5
+            },
+            {
+                "title": "an ancient graveyard",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "_id": 3,
+        "heirarchy": "secondary",
+        "title": "Pick a stone",
+        "options": [
+            {
+                "title": "rose quartz",
+                "weight": 10
+            },
+            {
+                "title": "lapis lazuli",
+                "weight": 7
+            },
+            {
+                "title": "turquoise",
+                "weight": 9
+            },
+            {
+                "title": "amethyst",
+                "weight": 10
+            },
+            {
+                "title": "yellow jasper",
+                "weight": 7
+            },
+            {
+                "title": "malachite",
+                "weight": 6
+            },
+            {
+                "title": "carnellian",
+                "weight": 6
+            },
+            {
+                "title": "hematite",
+                "weight": 5
+            },
+            {
+                "title": "obsidian",
+                "weight": 1
+            }
+        ]
+    }
+    
+
+]

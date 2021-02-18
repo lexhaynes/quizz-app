@@ -1,0 +1,22 @@
+[
+    {
+        "author": "author",
+        "book_title": "book title",
+        "book_url": "https://bookshop.org/book",
+        "metadata": {
+            "mood_list": [],
+            "genre": "book_genre",
+            "pub_year": 1900
+        }
+    },
+    {
+        "author": "author2",
+        "book_title": "book title2",
+        "book_url": "https://bookshop.org/book",
+        "metadata": {
+            "mood_list": [],
+            "genre": "book_genre",
+            "pub_year": 1900
+        }
+    }
+]
