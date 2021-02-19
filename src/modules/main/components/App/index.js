@@ -28,21 +28,23 @@ const Results = ({result}) => {
 };
 
 
-const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiveIndex, updateSelection}) => {
+const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection}) => {
  
   return (
     <form className="question_list"> 
     {
       QUESTIONS.filter(question => question.heirarchy !== "primary").map( (question) => {
+        const questionData = {
+          id: question._id,
+          title: question.title,
+          options: question.options
+        };
         return <QuestionItem
             key={`question_item_${question._id}`} 
-            id={question._id}
-            title={question.title} 
-            options={question.options} 
+            questionData={questionData}
             updateSelection={updateSelection}
+            updateActiveIndex={updateActiveIndex}
             isActive={activeQuestionIndex === question._id}
-            decrementActiveIndex={decrementActiveIndex}
-            incrementActiveIndex={incrementActiveIndex}
             />       
       })
     }
@@ -50,7 +52,8 @@ const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiv
   );
 }
 
-const QuestionItem = ({id, title, options, updateSelection, isActive, decrementActiveIndex, incrementActiveIndex}) => {
+const QuestionItem = ({questionData, updateSelection, isActive, updateActiveIndex}) => {
+  const {id, title, options} = questionData;
   
   const handleOptionSelect = (e) => {
     updateSelection(
@@ -63,9 +66,9 @@ const QuestionItem = ({id, title, options, updateSelection, isActive, decrementA
   const handleButtonClick = (e) => {
     const direction = e.target.dataset.direction;
     if (direction === "back") {
-      decrementActiveIndex()
+      updateActiveIndex.decrement()
     } else {
-      incrementActiveIndex();
+      updateActiveIndex.increment();
     } 
     e.preventDefault();
   }
@@ -122,25 +125,20 @@ const App = () => {
   ]
   */
 
-  /*
-    incrementActiveIndex: increment current active question
-  */
-  const incrementActiveIndex = () => {
-    //if user has selected all options, set currentActiveIndex to the last question
-    if (selections.length === QUESTIONS.length - 1) { 
-      setCurrentActiveIndex(QUESTIONS.length - 1);
-    } else { //assume active question is the NEXT question
-      setCurrentActiveIndex(prevState => prevState + 1);
+  const updateActiveIndex = {
+    increment: () => {
+      //if user has selected all options, set currentActiveIndex to the last question
+      if (selections.length === QUESTIONS.length - 1) { 
+        setCurrentActiveIndex(QUESTIONS.length - 1);
+      } else { //assume active question is the NEXT question
+        setCurrentActiveIndex(prevState => prevState + 1);
+      }
+    },
+    decrement: () => {
+      //assume active question is the PREV question
+      setCurrentActiveIndex(prevState => prevState - 1);
     }
-  }
-
-  /*
-    decrementActiveIndex: decrement current active question
-  */
-  const decrementActiveIndex = () => {
-    //assume active question is the PREV question
-    setCurrentActiveIndex(prevState => prevState - 1);
-  }
+  };
 
   /*
     updateSelection: update the state with the user's selection
@@ -160,7 +158,7 @@ const App = () => {
       });
 
     //increment active index
-    incrementActiveIndex();
+    updateActiveIndex.increment();
   }
 
   /* 
@@ -209,8 +207,7 @@ const App = () => {
       <ProgressIndicator progress={calcProgress()} />
       <QuestionList 
         activeQuestionIndex={currentActiveIndex}
-        decrementActiveIndex={decrementActiveIndex} 
-        incrementActiveIndex={incrementActiveIndex} 
+        updateActiveIndex={updateActiveIndex} 
         updateSelection={updateSelection} 
         />
       <Results result={interpretScore()}/>
