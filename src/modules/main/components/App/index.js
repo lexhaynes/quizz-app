@@ -30,7 +30,7 @@ const Results = ({result}) => {
 };
 
 
-const QuestionList = ({activeQuestionIndex, updateState}) => {
+const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
   return (
     <form className="question_list"> 
     {
@@ -46,6 +46,7 @@ const QuestionList = ({activeQuestionIndex, updateState}) => {
             updateSelection={updateState.selection}
             updateActiveIndex={updateState.activeIndex}
             isActive={activeQuestionIndex === question._id}
+            currentSelections={currentSelections}
             />       
       })
     }
@@ -53,7 +54,7 @@ const QuestionList = ({activeQuestionIndex, updateState}) => {
   );
 }
 
-const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive}) => {
+const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections}) => {
   const {id, title, options} = questionData;
 
   const handleOptionSelect = (e) => {
@@ -73,9 +74,6 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
     } 
     e.preventDefault();
   }
-
-  
-
 
   return (
     <div className="question_item" data-isactive={isActive}>
@@ -105,7 +103,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
           : ""
       }
       {
-        id !== QUESTIONS.length - 1
+        id !== QUESTIONS.length - 1 && currentSelections[id]
         ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
         : ""
       }
@@ -130,8 +128,8 @@ const App = () => {
   */
 
   /* state update functions 
-    activeIndex: update the activeIndex state with the user's selection
-    selection: update the selections state with the user's selection
+    activeIndex (function): update the activeIndex state with the user's selection
+    selection (object with 2 functions): update the selections state with the user's selection
   */
   const updateState = {
 
@@ -216,6 +214,7 @@ const App = () => {
       <QuestionList 
         activeQuestionIndex={currentActiveIndex}
         updateState={updateState} 
+        currentSelections={selections}
         />
       <Results result={interpretScore()}/>
     </>
