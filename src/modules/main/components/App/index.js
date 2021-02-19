@@ -8,7 +8,8 @@ import {useState} from 'react';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- don't show "next" unless user has completed the current question
+- add "get score" button when all the questions are selected
+- add "go back" button when all the questions are selected; alternately, don't inactivate last question on select
 - add more questions (there should be at least 10)
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
