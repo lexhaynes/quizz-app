@@ -7,7 +7,7 @@ import {useState} from 'react';
 //remove the over-arching question from the questions data array
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
-/* TODO: 
+/* TODOS: 
 - don't show "next" unless user has completed the current question
 - add more questions (there should be at least 10)
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
@@ -30,7 +30,7 @@ const Results = ({result}) => {
 };
 
 
-const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection}) => {
+const QuestionList = ({activeQuestionIndex, updateState}) => {
   return (
     <form className="question_list"> 
     {
@@ -43,8 +43,8 @@ const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection})
         return <QuestionItem
             key={`question_item_${question._id}`} 
             questionData={questionData}
-            updateSelection={updateSelection}
-            updateActiveIndex={updateActiveIndex}
+            updateSelection={updateState.selection}
+            updateActiveIndex={updateState.activeIndex}
             isActive={activeQuestionIndex === question._id}
             />       
       })
@@ -55,7 +55,7 @@ const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection})
 
 const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive}) => {
   const {id, title, options} = questionData;
-  
+
   const handleOptionSelect = (e) => {
     updateSelection(
       id,
@@ -73,6 +73,8 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
     } 
     e.preventDefault();
   }
+
+  
 
 
   return (
@@ -127,41 +129,47 @@ const App = () => {
   ]
   */
 
-  const updateActiveIndex = {
-    increment: () => {
-      //if user has selected all options, set currentActiveIndex to the last question
-      if (selections.length === QUESTIONS.length) { 
-        setCurrentActiveIndex(QUESTIONS.length - 1);
-      } else { //assume active question is the NEXT question
-        setCurrentActiveIndex(prevState => prevState + 1);
+  /* state update functions 
+    activeIndex: update the activeIndex state with the user's selection
+    selection: update the selections state with the user's selection
+  */
+  const updateState = {
+
+    /* update the selection state */
+    selection: (question_id, selected_title, selected_weight) => {
+      const newSelection = {
+        question_id,
+        selected_title,
+        selected_weight: Number(selected_weight)
+      };
+  
+      setSelections(prevState => {      
+          //we must put newState at index question_id!
+          let copiedState = [...prevState];
+          copiedState[question_id] = newSelection;
+          return copiedState
+      });
+  
+      //increment active index
+      updateState.activeIndex.increment();
+    },
+
+    /* update the activeIndex state */
+    activeIndex: {
+      increment: () => {
+        //if user has selected all options, set currentActiveIndex to the last question
+        if (selections.length === QUESTIONS.length) { 
+          setCurrentActiveIndex(QUESTIONS.length - 1);
+        } else { //assume active question is the NEXT question
+          setCurrentActiveIndex(prevState => prevState + 1);
+        }
+      },
+      decrement: () => {
+        //assume active question is the PREV question
+        setCurrentActiveIndex(prevState => prevState - 1);
       }
     },
-    decrement: () => {
-      //assume active question is the PREV question
-      setCurrentActiveIndex(prevState => prevState - 1);
-    }
   };
-
-  /*
-    updateSelection: update the state with the user's selection
-  */
-  const updateSelection = (question_id, selected_title, selected_weight) => {
-    const newSelection = {
-      question_id,
-      selected_title,
-      selected_weight: Number(selected_weight)
-    };
-
-    setSelections(prevState => {      
-        //we must put newState at index question_id!
-        let copiedState = [...prevState];
-        copiedState[question_id] = newSelection;
-        return copiedState
-    });
-
-    //increment active index
-    updateActiveIndex.increment();
-  }
 
   /* 
     calcProgress: return the completion of the quiz as a percemt
@@ -207,8 +215,7 @@ const App = () => {
       <ProgressIndicator progress={calcProgress()} />
       <QuestionList 
         activeQuestionIndex={currentActiveIndex}
-        updateActiveIndex={updateActiveIndex} 
-        updateSelection={updateSelection} 
+        updateState={updateState} 
         />
       <Results result={interpretScore()}/>
     </>
