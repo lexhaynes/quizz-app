@@ -5,8 +5,9 @@ import MOODS from 'modules/main/data/moods.json';
 import {useState} from 'react';
 
 /* TODO: 
-allow user to go back to a previous quesition
-add more questions (there should be at least 10)
+- don't show "next" unless user has completed the current question
+- change shape of state from object to array of objects. no reason for it to be object.
+- add more questions (there should be at least 10)
 */
 
 const ProgressIndicator = ({progress}) => {
@@ -112,7 +113,7 @@ const QuestionItem = ({id, title, options, saveSelection, isActive, decrementAct
 const App = () => {
   const [selections, setSelections] = useState({});
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-    /* Shape of the selections state:
+    /* OLD Shape of the selections state:
   {
     question_id: {
       selected_title: title,
@@ -120,6 +121,13 @@ const App = () => {
       
     }
   }
+  NEW shape of selection state:
+  [
+    {
+      question_id
+      selected_weight
+    }
+  ]
   */
 
   /*
