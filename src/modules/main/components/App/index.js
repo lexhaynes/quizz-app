@@ -8,6 +8,7 @@ import {useState} from 'react';
 - don't show "next" unless user has completed the current question
 - change shape of state from object to array of objects. no reason for it to be object.
 - add more questions (there should be at least 10)
+- the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
 const ProgressIndicator = ({progress}) => {
@@ -27,7 +28,7 @@ const Results = ({result}) => {
 };
 
 
-const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiveIndex, saveSelection}) => {
+const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiveIndex, updateSelection}) => {
  
   return (
     <form className="question_list"> 
@@ -38,7 +39,7 @@ const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiv
             id={question._id}
             title={question.title} 
             options={question.options} 
-            saveSelection={saveSelection}
+            updateSelection={updateSelection}
             isActive={activeQuestionIndex === question._id}
             decrementActiveIndex={decrementActiveIndex}
             incrementActiveIndex={incrementActiveIndex}
@@ -49,10 +50,10 @@ const QuestionList = ({activeQuestionIndex, decrementActiveIndex, incrementActiv
   );
 }
 
-const QuestionItem = ({id, title, options, saveSelection, isActive, decrementActiveIndex, incrementActiveIndex}) => {
+const QuestionItem = ({id, title, options, updateSelection, isActive, decrementActiveIndex, incrementActiveIndex}) => {
   
   const handleOptionSelect = (e) => {
-    saveSelection(
+    updateSelection(
       id,
       e.target.title,
       e.target.value,
@@ -102,8 +103,6 @@ const QuestionItem = ({id, title, options, saveSelection, isActive, decrementAct
         ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
         : ""
       }
-       
-       
       </div>
     </div>
   )
@@ -111,17 +110,10 @@ const QuestionItem = ({id, title, options, saveSelection, isActive, decrementAct
 
 
 const App = () => {
-  const [selections, setSelections] = useState({});
+  const [selections, setSelections] = useState([]);
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-    /* OLD Shape of the selections state:
-  {
-    question_id: {
-      selected_title: title,
-      selected_weight: weight,
-      
-    }
-  }
-  NEW shape of selection state:
+/*
+  shape of selection state:
   [
     {
       question_id
@@ -134,7 +126,8 @@ const App = () => {
     incrementActiveIndex: increment current active question
   */
   const incrementActiveIndex = () => {
-    if (Object.keys(selections).length === QUESTIONS.length - 1) { //if user has selected all options, set currentActiveIndex to the last question
+    //if user has selected all options, set currentActiveIndex to the last question
+    if (selections.length === QUESTIONS.length - 1) { 
       setCurrentActiveIndex(QUESTIONS.length - 1);
     } else { //assume active question is the NEXT question
       setCurrentActiveIndex(prevState => prevState + 1);
@@ -153,26 +146,28 @@ const App = () => {
     updateSelection: update the state with the user's selection
   */
   const updateSelection = (question_id, selected_title, selected_weight) => {
+    const newSelection = {
+      question_id,
+      selected_title,
+      selected_weight: Number(selected_weight)
+  }
+
+      setSelections(prevState => {      
+        //we must put newState at index question_id!
+        let copiedState = [...prevState];
+        copiedState[question_id] = newSelection;
+        return copiedState
+      });
+
     //increment active index
     incrementActiveIndex();
-
-    //update selections state
-    setSelections(prevState => {
-        return ({
-          ...prevState,
-          [question_id]: {
-            selected_title,
-            selected_weight: Number(selected_weight)
-          }
-      });
-    });
   }
 
   /* 
     calcProgress: return the completion of the quiz as a percemt
   */
   const calcProgress = () => {
-    const completedQuestions = Object.keys(selections).length;
+    const completedQuestions = selections.length;
     const totalQuestions = QUESTIONS.length - 1; //accounting for first element being the over-arching question
     return Math.floor(completedQuestions / totalQuestions * 100);
   }
@@ -182,8 +177,8 @@ const App = () => {
   */
   const calcScore = () => {
     let accumulator = 0;
-    for (let key in selections) {
-      accumulator = accumulator + selections[key].selected_weight;
+    if (selections.length > 0) {
+      selections.map(item => accumulator += item.selected_weight);
     }
     return accumulator;
   }
@@ -193,7 +188,6 @@ const App = () => {
   */
   const interpretScore = () => {
     const score = calcScore();
-    console.log("score: " + score);
     
     for (let i = 0; i < MOODS.length; i++) {
       let currentThreshold = MOODS[i].max_threshold;
@@ -217,7 +211,7 @@ const App = () => {
         activeQuestionIndex={currentActiveIndex}
         decrementActiveIndex={decrementActiveIndex} 
         incrementActiveIndex={incrementActiveIndex} 
-        saveSelection={updateSelection} 
+        updateSelection={updateSelection} 
         />
       <Results result={interpretScore()}/>
     </>
