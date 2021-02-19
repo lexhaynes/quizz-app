@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.scss';
-import QUESTIONS from 'modules/main/data/questions.json';
+import QUESTIONS_ALL from 'modules/main/data/questions.json';
 import MOODS from 'modules/main/data/moods.json';
 import {useState} from 'react';
+
+//remove the over-arching question from the questions data array
+const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODO: 
 - don't show "next" unless user has completed the current question
 - add more questions (there should be at least 10)
-- reduce the amount of props in components!
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
@@ -29,11 +31,10 @@ const Results = ({result}) => {
 
 
 const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection}) => {
- 
   return (
     <form className="question_list"> 
     {
-      QUESTIONS.filter(question => question.heirarchy !== "primary").map( (question) => {
+      QUESTIONS.map(question => {
         const questionData = {
           id: question._id,
           title: question.title,
@@ -52,7 +53,7 @@ const QuestionList = ({activeQuestionIndex, updateActiveIndex, updateSelection})
   );
 }
 
-const QuestionItem = ({questionData, updateSelection, isActive, updateActiveIndex}) => {
+const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive}) => {
   const {id, title, options} = questionData;
   
   const handleOptionSelect = (e) => {
@@ -102,7 +103,7 @@ const QuestionItem = ({questionData, updateSelection, isActive, updateActiveInde
           : ""
       }
       {
-        id !== QUESTIONS.length - 2
+        id !== QUESTIONS.length - 1
         ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
         : ""
       }
@@ -119,7 +120,8 @@ const App = () => {
   shape of selection state:
   [
     {
-      question_id
+      question_id,
+      question_title,
       selected_weight
     }
   ]
@@ -128,7 +130,7 @@ const App = () => {
   const updateActiveIndex = {
     increment: () => {
       //if user has selected all options, set currentActiveIndex to the last question
-      if (selections.length === QUESTIONS.length - 1) { 
+      if (selections.length === QUESTIONS.length) { 
         setCurrentActiveIndex(QUESTIONS.length - 1);
       } else { //assume active question is the NEXT question
         setCurrentActiveIndex(prevState => prevState + 1);
@@ -148,14 +150,14 @@ const App = () => {
       question_id,
       selected_title,
       selected_weight: Number(selected_weight)
-  }
+    };
 
-      setSelections(prevState => {      
+    setSelections(prevState => {      
         //we must put newState at index question_id!
         let copiedState = [...prevState];
         copiedState[question_id] = newSelection;
         return copiedState
-      });
+    });
 
     //increment active index
     updateActiveIndex.increment();
@@ -166,7 +168,7 @@ const App = () => {
   */
   const calcProgress = () => {
     const completedQuestions = selections.length;
-    const totalQuestions = QUESTIONS.length - 1; //accounting for first element being the over-arching question
+    const totalQuestions = QUESTIONS.length;
     return Math.floor(completedQuestions / totalQuestions * 100);
   }
 
@@ -199,8 +201,6 @@ const App = () => {
       }
     }
   }
-
-
 
   return (
     <>
