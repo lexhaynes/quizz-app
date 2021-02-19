@@ -6,8 +6,8 @@ import {useState} from 'react';
 
 /* TODO: 
 - don't show "next" unless user has completed the current question
-- change shape of state from object to array of objects. no reason for it to be object.
 - add more questions (there should be at least 10)
+- reduce the amount of props in components!
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
