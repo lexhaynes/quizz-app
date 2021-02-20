@@ -8,8 +8,8 @@ import {useState, useEffect} from 'react';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- when you click "go back" after completing the quiz, the "show results" button should still be there
 - add more questions (there should be at least 10)
+- when displaying question options, randomize them
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
