@@ -2,14 +2,12 @@ import React from 'react';
 import './App.scss';
 import QUESTIONS_ALL from 'modules/main/data/questions.json';
 import MOODS from 'modules/main/data/moods.json';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 //remove the over-arching question from the questions data array
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- add "get score" button when all the questions are selected
-- add "go back" button when all the questions are selected; alternately, don't inactivate last question on select
 - add more questions (there should be at least 10)
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
@@ -18,14 +16,6 @@ const ProgressIndicator = ({progress}) => {
   return (
     <>
       <h2>Progress: </h2>{progress} 
-    </>
-  )
-};
-
-const Results = ({result}) => {
-  return (
-    <>
-      <h2>Result:</h2> {result} 
     </>
   )
 };
@@ -67,7 +57,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   }
 
   const handleButtonClick = (e) => {
-    const direction = e.target.dataset.direction;
+    const { direction } = e.target.dataset;
     if (direction === "back") {
       updateActiveIndex.decrement()
     } else {
@@ -113,10 +103,31 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   )
 };
 
+const CompleteQuiz = ({handleButtonClick}) => {
+  return (
+    <div className="button-wrapper">
+      <button data-action="back" onClick={handleButtonClick}>Go Back</button>
+      <button data-action="results" onClick={handleButtonClick}>Get Results</button>
+    </div>
+  )
+}
+
+const Results = ({result}) => {
+  return (
+    <>
+     <h2>Result: {result} </h2>
+    </>
+  )
+};
+
+
+
 
 const App = () => {
   const [selections, setSelections] = useState([]);
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
+  const [showComplete, setShowComplete] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 /*
   shape of selection state:
   [
@@ -127,6 +138,16 @@ const App = () => {
     }
   ]
   */
+
+  /*  this is a callback run after state is updated, since setState runs async checking the state might yield inaccurate result! 
+      check if all the questions have been answered
+  */
+  useEffect(() => {
+    //check if all the questions have been answered
+    if (selections.length === QUESTIONS.length) {
+      setShowComplete(true);
+    }
+  }, [selections]);
 
   /* state update functions 
     activeIndex (function): update the activeIndex state with the user's selection
@@ -146,6 +167,7 @@ const App = () => {
           //we must put newState at index question_id!
           let copiedState = [...prevState];
           copiedState[question_id] = newSelection;
+          console.log(selections.length);
           return copiedState
       });
   
@@ -209,6 +231,20 @@ const App = () => {
     }
   }
 
+  const handleQuizComplete = (e) => {
+    const { action } = e.target.dataset;
+    if (action === "back") {
+     setShowComplete(false);
+     setShowResults(false);
+     //make the last item active again
+     setCurrentActiveIndex(prevState => prevState - 1);
+    } else { //show results
+      setShowResults(true);
+    }
+    e.preventDefault();
+  }
+
+
   return (
     <>
       <ProgressIndicator progress={calcProgress()} />
@@ -217,7 +253,16 @@ const App = () => {
         updateState={updateState} 
         currentSelections={selections}
         />
-      <Results result={interpretScore()}/>
+        {
+          showComplete
+          ? <CompleteQuiz handleButtonClick={handleQuizComplete} />
+          : ""
+        }
+        {
+          showResults
+          ? <Results result={interpretScore()}/>
+          : ""
+        }  
     </>
   );
 }
