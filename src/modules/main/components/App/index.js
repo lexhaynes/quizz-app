@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import { shuffle } from 'modules/main/components/utils';
 import QUESTIONS_ALL from 'modules/main/data/questions.json';
 import MOODS from 'modules/main/data/moods.json';
 import {useState, useEffect} from 'react';
@@ -8,8 +9,7 @@ import {useState, useEffect} from 'react';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- add more questions (there should be at least 10)
-- when displaying question options, randomize them
+- start styling!
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
@@ -48,6 +48,7 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
 
 const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections}) => {
   const {id, title, options} = questionData;
+  const shuffledOptions = shuffle(options);
 
   const handleOptionSelect = (e) => {
     updateSelection(
@@ -71,7 +72,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
     <div className="question_item" data-isactive={isActive}>
       <h2>{title}</h2>
       {
-        options.map( (opt, i) => {
+        shuffledOptions.map( (opt, i) => {
           return (
             <React.Fragment key={`question_item_option_${i}`} >
               <input 
@@ -222,6 +223,8 @@ const App = () => {
   */
   const interpretScore = () => {
     const score = calcScore();
+
+    console.log("score is: " + score);
     
     for (let i = 0; i < MOODS.length; i++) {
       let currentThreshold = MOODS[i].max_threshold;
