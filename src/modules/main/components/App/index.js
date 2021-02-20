@@ -8,6 +8,7 @@ import {useState, useEffect} from 'react';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
+- when you click "go back" after completing the quiz, the "show results" button should still be there
 - add more questions (there should be at least 10)
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
@@ -103,10 +104,14 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   )
 };
 
-const CompleteQuiz = ({handleButtonClick}) => {
+const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
     <div className="button-wrapper">
-      <button data-action="back" onClick={handleButtonClick}>Go Back</button>
+      {
+        showBackBtn
+        ? <button data-action="back" onClick={handleButtonClick}>Go Back</button>
+        : "" 
+      }
       <button data-action="results" onClick={handleButtonClick}>Get Results</button>
     </div>
   )
@@ -127,6 +132,7 @@ const App = () => {
   const [selections, setSelections] = useState([]);
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const [showComplete, setShowComplete] = useState(false);
+  const [showCompleteBackBtn, setShowCompleteBackBtn] = useState(true);
   const [showResults, setShowResults] = useState(false);
 /*
   shape of selection state:
@@ -167,7 +173,6 @@ const App = () => {
           //we must put newState at index question_id!
           let copiedState = [...prevState];
           copiedState[question_id] = newSelection;
-          console.log(selections.length);
           return copiedState
       });
   
@@ -234,8 +239,8 @@ const App = () => {
   const handleQuizComplete = (e) => {
     const { action } = e.target.dataset;
     if (action === "back") {
-     setShowComplete(false);
-     setShowResults(false);
+     //hide back button
+      setShowCompleteBackBtn(false);
      //make the last item active again
      setCurrentActiveIndex(prevState => prevState - 1);
     } else { //show results
@@ -255,7 +260,7 @@ const App = () => {
         />
         {
           showComplete
-          ? <CompleteQuiz handleButtonClick={handleQuizComplete} />
+          ? <CompleteQuiz showBackBtn={showCompleteBackBtn} handleButtonClick={handleQuizComplete} />
           : ""
         }
         {
