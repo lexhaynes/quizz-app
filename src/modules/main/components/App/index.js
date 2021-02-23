@@ -1,9 +1,10 @@
 import React from 'react';
-import './App.scss';
-import { shuffle } from 'modules/main/components/utils';
+import {useState, useEffect} from 'react';
+import { shuffle } from 'modules/main/utils';
 import QUESTIONS_ALL from 'modules/main/data/questions.json';
 import MOODS from 'modules/main/data/moods.json';
-import {useState, useEffect} from 'react';
+import './App.scss';
+import { ProgressBar, Container, Row, Col } from 'react-bootstrap';
 
 //remove the over-arching question from the questions data array
 const QUESTIONS = QUESTIONS_ALL.slice(1);
@@ -14,17 +15,13 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 */
 
 const ProgressIndicator = ({progress}) => {
-  return (
-    <>
-      <h2>Progress: </h2>{progress} 
-    </>
-  )
+  return <ProgressBar animated now={progress} />    
 };
 
 
 const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
   return (
-    <form className="question_list"> 
+    <Container fluid="md" className="question_list"> 
     {
       QUESTIONS.map(question => {
         const questionData = {
@@ -32,17 +29,20 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
           title: question.title,
           options: question.options
         };
-        return <QuestionItem
-            key={`question_item_${question._id}`} 
-            questionData={questionData}
-            updateSelection={updateState.selection}
-            updateActiveIndex={updateState.activeIndex}
-            isActive={activeQuestionIndex === question._id}
-            currentSelections={currentSelections}
-            />       
+        return (
+              <QuestionItem
+                key={`question_item_${question._id}`} 
+                questionData={questionData}
+                updateSelection={updateState.selection}
+                updateActiveIndex={updateState.activeIndex}
+                isActive={activeQuestionIndex === question._id}
+                currentSelections={currentSelections}
+                />  
+         
+        )     
       })
     }
-    </form>
+    </Container>
   );
 }
 
@@ -254,24 +254,35 @@ const App = () => {
 
 
   return (
-    <>
-      <ProgressIndicator progress={calcProgress()} />
-      <QuestionList 
-        activeQuestionIndex={currentActiveIndex}
-        updateState={updateState} 
-        currentSelections={selections}
-        />
-        {
-          showComplete
-          ? <CompleteQuiz showBackBtn={showCompleteBackBtn} handleButtonClick={handleQuizComplete} />
-          : ""
-        }
-        {
-          showResults
-          ? <Results result={interpretScore()}/>
-          : ""
-        }  
-    </>
+    <Container fluid>
+    <Row noGutters={true}>
+      <Col>
+        <ProgressIndicator progress={calcProgress()} />
+      </Col>
+    </Row>
+    <Row noGutters={true}>
+      <Col>
+            <QuestionList 
+              activeQuestionIndex={currentActiveIndex}
+              updateState={updateState} 
+              currentSelections={selections}
+              />
+              {
+                showComplete
+                ? <CompleteQuiz showBackBtn={showCompleteBackBtn} handleButtonClick={handleQuizComplete} />
+                : ""
+              }
+              {
+                showResults
+                ? <Results result={interpretScore()}/>
+                : ""
+              }  
+      </Col>
+    </Row>
+      
+     
+    </Container>
+
   );
 }
 
