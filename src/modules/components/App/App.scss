@@ -1,8 +1,4 @@
-.App {
-  .logo {
-    border: solid red 1px;
-  }
-}
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 .question_item {
   &[data-isactive="true"] {
@@ -27,3 +23,6 @@
 }
 
 /* bootstrap overrides */
+.progress {
+  border-radius: 0;
+}

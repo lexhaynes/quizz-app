@@ -20,7 +20,7 @@ const brandingHref = NAVIGATION.branding.href;
 
 */
 
-/* print links, adding a dropdown if number of links exceeds dropdown threshold*/
+/* print links, adding a dropdown if number of links exceeds dropdown threshold */
 const LinkDisplay = ({data}) => {
     let dropdown = [];
     return (
