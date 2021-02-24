@@ -20,9 +20,10 @@ import NavBar from 'modules/components/NavBar';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- move progress bar so it's sticky
-- add spacing between QList and navbar
-- style QuestionItems
+- if button is inactive, don't show it
+- add images to QuestionItem selections
+- style QuestionItems uniquely
+- style results uniquely
 - add a footer
 - make the header make sense w real links
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
