@@ -4,7 +4,16 @@ import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
 import MOODS from 'modules/data/moods.json';
 import './App.scss';
-import { ProgressBar, Container} from 'react-bootstrap';
+import { 
+    ProgressBar, 
+    Container, 
+    Row, 
+    Col, 
+    Card,
+    Form,
+    Button,
+    ButtonGroup
+  } from 'react-bootstrap';
 import NavBar from 'modules/components/NavBar';
 
 //remove the over-arching question from the questions data array
@@ -14,6 +23,8 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 - move progress bar so it's sticky
 - add spacing between QList and navbar
 - style QuestionItems
+- add a footer
+- make the header make sense w real links
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
@@ -29,26 +40,30 @@ const ProgressIndicator = ({progress}) => {
 const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
   return (
     <Container fluid="md" className="question_list"> 
-    {
-      QUESTIONS.map(question => {
-        const questionData = {
-          id: question._id,
-          title: question.title,
-          options: question.options
-        };
-        return (
-              <QuestionItem
-                key={`question_item_${question._id}`} 
-                questionData={questionData}
-                updateSelection={updateState.selection}
-                updateActiveIndex={updateState.activeIndex}
-                isActive={activeQuestionIndex === question._id}
-                currentSelections={currentSelections}
-                />  
-         
-        )     
-      })
-    }
+      <Form>
+      {
+        QUESTIONS.map(question => {
+          const questionData = {
+            id: question._id,
+            title: question.title,
+            options: question.options
+          };
+          return (
+              <Row className="mt-4" key={`question-item-row_${question._id}`} >
+                <Col>
+                  <QuestionItem
+                    questionData={questionData}
+                    updateSelection={updateState.selection}
+                    updateActiveIndex={updateState.activeIndex}
+                    isActive={activeQuestionIndex === question._id}
+                    currentSelections={currentSelections}
+                    /> 
+                </Col>
+              </Row>
+          )     
+        })
+      }
+      </Form>
     </Container>
   );
 }
@@ -76,60 +91,93 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   }
 
   return (
-    <div className="question_item" data-isactive={isActive}>
-      <h2>{title}</h2>
+    <Card className="question_item" data-isactive={isActive}>
+    <Card.Body>
+      <Card.Title>
+        {title}
+      </Card.Title>
+
       {
         shuffledOptions.map( (opt, i) => {
           return (
-            <React.Fragment key={`question_item_option_${i}`} >
-              <input 
-                className="question_item_option" 
-                id={`question_item_option_${i}`} 
-                onClick={handleOptionSelect}
-                type="radio"
-                name={title}
-                value={opt.weight}
-                title={opt.title}
-                />
-                <label htmlFor={`question_item_option_${i}`}>{opt.title}</label>
-            </React.Fragment>
+            <Form.Check
+              key={`question_item_option_${i}`} 
+              inline 
+              type="radio" 
+              className="question_item_option" 
+              id={`question_item_option_${i}`} 
+              label={opt.title}
+              onClick={handleOptionSelect}
+              name={title}
+              value={opt.weight}   
+              />
           )
         })
       }
-      <div className="button-wrapper">
-      {
-        id !== 0 
-          ?  <button data-direction="back" onClick={handleButtonClick}>Go back</button> 
+    </Card.Body> 
+
+    <Card.Body>
+      <ButtonGroup aria-label="go to previous and or next question">
+        {
+          id !== 0 
+            ?  <Button data-direction="back" onClick={handleButtonClick}>Go back</Button> 
+            : ""
+        }
+        {
+          id !== QUESTIONS.length - 1 && currentSelections[id]
+          ?  <Button data-direction="next" onClick={handleButtonClick}>Next</Button>
           : ""
-      }
-      {
-        id !== QUESTIONS.length - 1 && currentSelections[id]
-        ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
-        : ""
-      }
-      </div>
-    </div>
+        }
+        </ButtonGroup>
+      </Card.Body>
+    </Card>
+
   )
 };
 
 const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
-    <div className="button-wrapper">
-      {
-        showBackBtn
-        ? <button data-action="back" onClick={handleButtonClick}>Go Back</button>
-        : "" 
-      }
-      <button data-action="results" onClick={handleButtonClick}>Get Results</button>
-    </div>
+    <Container>
+    <Row>
+      <Col>
+        <Card>
+          <Card.Body>
+            <Card.Title>
+              Get Results
+            </Card.Title>
+            <ButtonGroup aria-label="go to previous and or next question">
+              {
+                showBackBtn
+                ? <Button data-action="back" onClick={handleButtonClick}>Go Back</Button>
+                : "" 
+              }
+              <Button data-action="results" onClick={handleButtonClick}>Get Results</Button>
+            </ButtonGroup>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  </Container>
+
+
+
   )
 }
 
 const Results = ({result}) => {
   return (
-    <>
-     <h2>Result: {result} </h2>
-    </>
+    <Container>
+    <Row>
+      <Col>
+        <Card>
+          <Card.Body>
+            <Card.Title>Result</Card.Title>
+            <Card.Text>{result}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+    </Container>
   )
 };
 
