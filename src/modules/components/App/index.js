@@ -11,7 +11,9 @@ import NavBar from 'modules/components/NavBar';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- start styling!
+- move progress bar so it's sticky
+- add spacing between QList and navbar
+- style QItems
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 

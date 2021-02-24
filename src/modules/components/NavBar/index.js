@@ -55,7 +55,7 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" sticky="top">
         <Navbar.Brand href={brandingHref}>{branding}</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
