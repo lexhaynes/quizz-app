@@ -1,24 +1,12 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import NAVIGATION from 'modules/data/navigation.json';
+import './NavBar.scss'
 
-const DROPDOWN_THRESHOLD = 2; //min amount of items before dropdown is displayed
+const DROPDOWN_THRESHOLD = 0; //min amount of items before dropdown is displayed
 const branding = NAVIGATION.branding.name;
 const brandingHref = NAVIGATION.branding.href;
 
-/*
-    navLeft.length >= DROPDOWN_THRESHOLD
-    ?  <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-        {
-            navLeft.map( (nav, i) => {
-                const { href, name } = nav;
-                return <NavDropdown.Item href={href} key={`nav-dropdown-link_${i}`}>{name}</NavDropdown.Item>
-            })
-        }
-        </NavDropdown>
-    : navLeft.map( (nav, i) => <Nav.Link href={nav.href} key={`nav-link_${i}`}>{nav.name}</Nav.Link>)
-
-*/
 
 /* print links, adding a dropdown if number of links exceeds dropdown threshold */
 const LinkDisplay = ({data}) => {
@@ -37,7 +25,7 @@ const LinkDisplay = ({data}) => {
             }
             {
                 dropdown.length > 0
-                ? <NavDropdown title="More" id="collasible-nav-dropdown"> 
+                ? <NavDropdown title="More Quizzes" id="collasible-nav-dropdown"> 
                     {
                         dropdown.map( (nav, i) => {
                             const { href, name } = nav;
@@ -64,9 +52,11 @@ export default function NavBar() {
                 <LinkDisplay data={NAVIGATION.left} />
             </Nav>
 
-            {/* right side  nav*/}
+        
             <Nav className="ml-auto">
-            <LinkDisplay data={NAVIGATION.right} />
+                <Button>
+                    Get Updates!
+                </Button>
             </Nav>
         </Navbar.Collapse>
         </Navbar>

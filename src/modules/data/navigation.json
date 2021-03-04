@@ -1,34 +1,24 @@
 {
     "branding": {
-        "name": "Quizzy App",
+        "name": "Quizzes for Good",
         "href": "/"
     },
     "left": [
         {
-            "name": "Link 1",
+            "name": "Quiz 1",
             "href": "/link1"
         },
         {
-            "name": "Link 2",
+            "name": "Quiz 2",
             "href": "/link2"
         },
         {
-            "name": "Link 3",
+            "name": "Quiz 3",
             "href": "/link3"
         },
         {
-            "name": "Link 4",
+            "name": "Quiz 4",
             "href": "/link4"
         }
-    ],
-    "right": [
-        {
-            "name": "Link 5",
-            "href": "/link5"
-        },
-        {
-            "name": "Link 6",
-            "href": "/link6"
-        }
-    ]    
+    ]   
 }
