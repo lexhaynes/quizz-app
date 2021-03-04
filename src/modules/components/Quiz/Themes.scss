@@ -1,0 +1,12 @@
+/* ================== BRUTALIST ================== *
+/* think adidas website */
+
+$primary: rgb(158, 23, 23);
+
+.theme-brutalist {
+  button.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+    border-radius: 1px;
+  }
+}
