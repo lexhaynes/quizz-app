@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import NAVIGATION from 'modules/data/navigation.json';
 import './NavBar.scss'
 
 const DROPDOWN_THRESHOLD = 0; //min amount of items before dropdown is displayed
-const branding = NAVIGATION.branding.name;
-const brandingHref = NAVIGATION.branding.href;
+const logo = NAVIGATION.logo.name;
+const logoHref = NAVIGATION.logo.href;
 
 
 /* print links, adding a dropdown if number of links exceeds dropdown threshold */
@@ -17,7 +18,7 @@ const LinkDisplay = ({data}) => {
                     const { href, name } = nav;
                     let navLink;
                     if (i < DROPDOWN_THRESHOLD) {
-                        navLink = <a href={href} key={`nav-link_${i}`}>{name}</a>
+                        navLink = <Link to={href} key={`nav-link_${i}`}>{name}</Link>
                     } else {
                         dropdown.push(nav);
                     }
@@ -44,10 +45,13 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <nav className="navbar">
-            <a href={brandingHref}>{branding}</a>
-            <LinkDisplay data={NAVIGATION.left} />
-            <button>Get Updates!</button>
+        <nav className="nav-bar">
+            <div className="container">
+                <Link to={logoHref}>{logo}</Link>
+                <LinkDisplay data={NAVIGATION.left} />
+                <button>Get Updates!</button>
+            </div>
+       
         </nav>
     )
 }

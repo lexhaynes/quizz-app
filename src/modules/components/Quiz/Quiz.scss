@@ -1,4 +1,27 @@
-.question_item {
+/* ====== Quiz ====== */
+.quiz {
+}
+
+/* ====== NavBar ====== */
+.nav-bar {
+  @apply bg-white p-4 shadow-sm;
+}
+
+/* ====== ProgressIndicator ====== */
+.progress-indicator {
+}
+
+/* ====== QuizHeader ====== */
+.quiz-header {
+}
+
+/* ====== QuestionList ====== */
+.question-list {
+  @apply m-4;
+}
+
+/* ====== QuestionItem ====== */
+.question-item {
   &[data-isactive="true"] {
     border: solid red 1px;
     cursor: pointer;
@@ -13,7 +36,24 @@
       opacity: 0.5;
     }
   }
-  .question_item_option {
+  .question-item-option {
     cursor: pointer;
   }
+}
+
+/* ====== QuestionItemNav ====== */
+.question-item-nav {
+}
+
+/* ====== CompleteQuiz ====== */
+.complete-quiz {
+}
+
+/* ====== QuizResults ====== */
+.quiz-results {
+}
+
+/* ====== Footer ====== */
+.footer {
+  @apply bg-gray-300 p-4 mt-6;
 }

@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
 import 'index.css';
 import Quiz from 'modules/components/Quiz';
 import reportWebVitals from 'reportWebVitals';
@@ -7,7 +13,13 @@ import reportWebVitals from 'reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Quiz />
+  <Router>
+    <Switch>
+      <Route path="/">
+          <Quiz />
+        </Route>
+    </Switch>
+  </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

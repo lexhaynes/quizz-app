@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {useState, useEffect} from 'react';
 import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
@@ -27,14 +28,16 @@ score seems to always result to neutral...
 
 const QuizHeader = () => {
   return (
-    <h2 className="text-center">{ QUESTIONS_ALL[0].title }</h2>
+    <div className="quiz-header">
+      <h2 className="text-center">{ QUESTIONS_ALL[0].title }</h2>
+    </div>
+    
   )
 }
 
-
 const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
   return (
-      <form>
+      <div className="question-list">
       {
         QUESTIONS.map(question => {
           const questionData = {
@@ -43,19 +46,18 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
             options: question.options
           };
           return (
-              <div className="mt-4" key={`question-item-row_${question._id}`} >
                   <QuestionItem
+                    key={`question-item-row_${question._id}`}
                     questionData={questionData}
                     updateSelection={updateState.selection}
                     updateActiveIndex={updateState.activeIndex}
                     isActive={activeQuestionIndex === question._id}
                     currentSelections={currentSelections}
                     /> 
-              </div>
           )     
         })
       }
-      </form>
+      </div>
   );
 }
 
@@ -81,51 +83,48 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   }
 
   return (
-    <>
-    <div className="question_item" data-isactive={isActive}>
+    <div className="question-item" data-isactive={isActive}>
         <h2>{title}</h2>
 
       {
         shuffledOptions.map( (opt, i) => {
           return (
-            <>
-              <label for={`question_item_option_${i}`}>{opt.title}</label>
+            <span key={`question-item-option_${i}`} >
+              <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
               <input
-                key={`question_item_option_${i}`} 
-                inline 
                 type="radio" 
-                className="question_item_option" 
-                id={`question_item_option_${i}`} 
+                className="question-item-option" 
+                id={`question-item-option_${i}`} 
                 label={opt.title}
                 onClick={handleOptionSelect}
                 name={title}
                 value={opt.weight}   
                 />
-              </>
+              </span>
           )
         })
       }
-    </div> 
-
-    <QuizItemNav 
+    
+    <QuestionItemNav 
       id={id}
       handleButtonClick={handleButtonClick}
       currentSelections={currentSelections}
       isActive={isActive} />
-    </>
+
+    </div> 
+
   )
 }
 
 /*
-  only show QuizItemNav if the current question is active
+  only show QuestionItemNav if the current question is active
 */
 
-const QuizItemNav = ({id, handleButtonClick, currentSelections, isActive}) => {
+const QuestionItemNav = ({id, handleButtonClick, currentSelections, isActive}) => {
 
 if (isActive && currentSelections.length) {
     return (
-      <>
-        <div aria-label="go to previous and or next question">
+      <div className="question-item-nav">
           {
             id !== 0
               ?  <button data-direction="back" onClick={handleButtonClick}>Go back</button> 
@@ -136,8 +135,7 @@ if (isActive && currentSelections.length) {
             ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
             : ""
           }
-          </div>
-        </>
+        </div>
     )
   } 
   return null;
@@ -147,26 +145,24 @@ if (isActive && currentSelections.length) {
 
 const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
-    <>
+    <div className="complete-quiz">
       <h2>Get Results</h2>
-      <div aria-label="go to previous and or next question">
         {
           showBackBtn
           ? <button data-action="back" onClick={handleButtonClick}>Go Back</button>
           : "" 
         }
         <button data-action="results" onClick={handleButtonClick}>Get Results</button>
-      </div>
-    </>
+    </div>
   )
 }
 
-const Results = ({result}) => {
+const QuizResults = ({result}) => {
   return (
-    <>
+    <div className="quiz-results">
       <h2>Result</h2>
       <div>{result}</div>
-    </>
+    </div>
   )
 };
 
@@ -296,31 +292,32 @@ const Quiz = () => {
 
 
   return (
-    <>
+        <div className="quiz">
         <NavBar />
-        <ProgressIndicator progress={calcProgress()} />
-        <QuizHeader />
-        <QuestionList 
-          activeQuestionIndex={currentActiveIndex}
-          updateState={updateState} 
-          currentSelections={selections}
-          />
-          {
-            showComplete
-            ? <CompleteQuiz 
-                showBackBtn={showCompleteBackBtn} 
-                handleButtonClick={handleQuizComplete} 
-                />
-            : ""
-          }
-          {
-            showResults
-            ? <Results result={interpretScore()}/>
-            : ""
-          }  
-            <Footer />
-      </>
-
+        <div className="container">
+          <ProgressIndicator progress={calcProgress()} />
+          <QuizHeader />
+          <QuestionList 
+            activeQuestionIndex={currentActiveIndex}
+            updateState={updateState} 
+            currentSelections={selections}
+            />
+            {
+              showComplete
+              ? <CompleteQuiz 
+                  showBackBtn={showCompleteBackBtn} 
+                  handleButtonClick={handleQuizComplete} 
+                  />
+              : ""
+            }
+            {
+              showResults
+              ? <QuizResults result={interpretScore()}/>
+              : ""
+            }
+        </div>
+        <Footer />
+      </div>
   );
 }
 
