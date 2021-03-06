@@ -5,7 +5,7 @@ import './ProgressIndicator.scss';
 export default function ProgressIndicator({progress}) {
   return <ProgressBar 
     animated now={progress} 
-    label={`${progress}%`}
+    variant="secondary"
     className="progress-indicator fixed-top"
   />    
 };

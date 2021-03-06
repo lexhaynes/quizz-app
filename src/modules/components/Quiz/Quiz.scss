@@ -1,4 +1,4 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 
 .question_item {
   &[data-isactive="true"] {
@@ -24,3 +24,5 @@
 .progress {
   border-radius: 0;
 }
+
+@import "./Themes.scss";

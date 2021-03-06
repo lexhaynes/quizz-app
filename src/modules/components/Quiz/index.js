@@ -4,7 +4,6 @@ import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
 import MOODS from 'modules/data/moods.json';
 import './Quiz.scss';
-import './Themes.scss';
 import { 
     Container, 
     Row, 
@@ -29,10 +28,12 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 - style QuestionItems uniquely
 - style results uniquely
 - make the header + footer make sense w real links
+- consider changing the scoring to be based on frequency of certain type (eg A, B, C, D) vs cumulative score, since the 
+score seems to always result to neutral...
+- style the results
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
-const CURRENT_THEME = "brutalist";
 
 const QuizHeader = () => {
   return (
@@ -85,9 +86,10 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   const shuffledOptions = shuffle(options);
 
   const handleOptionSelect = (e) => {
+    console.log("selected id: ", id);
+    console.log("selected value: ", e.target.value);
     updateSelection(
       id,
-      e.target.title,
       e.target.value,
     );
   }
@@ -133,6 +135,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
       handleButtonClick={handleButtonClick}
       currentSelections={currentSelections}
       isActive={isActive} />
+
     </Card>
 
   )
@@ -169,7 +172,7 @@ if (isActive && currentSelections.length) {
 
 const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
-    <Container>
+    <Container className="my-4">
     <Row>
       <Col>
         <Card>
@@ -190,15 +193,12 @@ const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
       </Col>
     </Row>
   </Container>
-
-
-
   )
 }
 
 const Results = ({result}) => {
   return (
-    <Container>
+    <Container className="my-4">
     <Row>
       <Col>
         <Card>
@@ -248,10 +248,9 @@ const Quiz = () => {
   const updateState = {
 
     /* update the selection state */
-    selection: (question_id, selected_title, selected_weight) => {
+    selection: (question_id, selected_weight) => {
       const newSelection = {
         question_id,
-        selected_title,
         selected_weight: Number(selected_weight)
       };
   
@@ -298,6 +297,7 @@ const Quiz = () => {
   const calcScore = () => {
     let accumulator = 0;
     if (selections.length > 0) {
+      console.log("selections: ", selections);
       selections.map(item => accumulator += item.selected_weight);
     }
     return accumulator;
@@ -339,7 +339,7 @@ const Quiz = () => {
 
 
   return (
-    <div className={`theme-${CURRENT_THEME}`}>
+    <>
         <NavBar />
         <ProgressIndicator progress={calcProgress()} />
         <QuizHeader />
@@ -350,7 +350,10 @@ const Quiz = () => {
           />
           {
             showComplete
-            ? <CompleteQuiz showBackBtn={showCompleteBackBtn} handleButtonClick={handleQuizComplete} />
+            ? <CompleteQuiz 
+                showBackBtn={showCompleteBackBtn} 
+                handleButtonClick={handleQuizComplete} 
+                />
             : ""
           }
           {
@@ -362,7 +365,7 @@ const Quiz = () => {
             <Footer />
           </FooterWrapper>
     
-      </div>
+      </>
 
   );
 }

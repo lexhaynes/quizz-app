@@ -16,11 +16,13 @@ const LinkDisplay = ({data}) => {
             {
                 data.map((nav, i) => {
                     const { href, name } = nav;
+                    let navLink;
                     if (i < DROPDOWN_THRESHOLD) {
-                        return <Nav.Link href={href} key={`nav-link_${i}`}>{name}</Nav.Link>
+                        navLink = <Nav.Link href={href} key={`nav-link_${i}`}>{name}</Nav.Link>
                     } else {
                         dropdown.push(nav);
                     }
+                    return navLink;
                 })
             }
             {
@@ -43,7 +45,7 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" sticky="top">
+        <Navbar collapseOnSelect expand="md" sticky="top" className="bg-white shadow-sm">
         <Navbar.Brand href={brandingHref}>{branding}</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
