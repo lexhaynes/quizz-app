@@ -1,6 +1,6 @@
 # Quiz App: Book Recommendation
 
-The purpose of this quiz is to drive users to one of several bookshop.org links for books written by Black authors
+The purpose of this quiz is to drive users to one of several bookshop.org (or other non-Amazon boostore) links for books written by Black authors
 
 ## Quiz main question
 
