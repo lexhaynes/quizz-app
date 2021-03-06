@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import NAVIGATION from 'modules/data/navigation.json';
 import './NavBar.scss'
 
@@ -18,7 +17,7 @@ const LinkDisplay = ({data}) => {
                     const { href, name } = nav;
                     let navLink;
                     if (i < DROPDOWN_THRESHOLD) {
-                        navLink = <Nav.Link href={href} key={`nav-link_${i}`}>{name}</Nav.Link>
+                        navLink = <a href={href} key={`nav-link_${i}`}>{name}</a>
                     } else {
                         dropdown.push(nav);
                     }
@@ -27,14 +26,14 @@ const LinkDisplay = ({data}) => {
             }
             {
                 dropdown.length > 0
-                ? <NavDropdown title="More Quizzes" id="collasible-nav-dropdown"> 
+                ? <span title="More Quizzes"> 
                     {
                         dropdown.map( (nav, i) => {
                             const { href, name } = nav;
-                            return <NavDropdown.Item href={href} key={`nav-dropdown-link_${i}`}>{name}</NavDropdown.Item>
+                            return <a href={href} key={`nav-dropdown-link_${i}`}>{name}</a>
                         })
                     }
-                </NavDropdown>
+                </span>
                 : ""
             }
         </>
@@ -45,22 +44,10 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <Navbar collapseOnSelect expand="md" sticky="top" className="bg-white shadow-sm">
-        <Navbar.Brand href={brandingHref}>{branding}</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-            {/* left side  nav*/}
-            <Nav>
-                <LinkDisplay data={NAVIGATION.left} />
-            </Nav>
-
-        
-            <Nav className="ml-auto">
-                <Button>
-                    Get Updates!
-                </Button>
-            </Nav>
-        </Navbar.Collapse>
-        </Navbar>
+        <nav className="navbar">
+            <a href={brandingHref}>{branding}</a>
+            <LinkDisplay data={NAVIGATION.left} />
+            <button>Get Updates!</button>
+        </nav>
     )
 }

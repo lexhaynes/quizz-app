@@ -3,9 +3,9 @@ import './Footer.scss';
 
 function Footer() {
     return (
-        <footer className="footer py-3 bg-light">
+        <footer className="footer">
             <div className="container">
-                <span className="text-dark">Footer</span>
+                <span>Footer</span>
             </div>
         </footer>
     )

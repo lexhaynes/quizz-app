@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import 'index.css';
 import Quiz from 'modules/components/Quiz';
 import reportWebVitals from 'reportWebVitals';
-/* import 'bootstrap/dist/css/bootstrap.min.css';
- */
+
+
 ReactDOM.render(
   <React.StrictMode>
     <Quiz />

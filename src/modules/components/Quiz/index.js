@@ -4,18 +4,8 @@ import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
 import MOODS from 'modules/data/moods.json';
 import './Quiz.scss';
-import { 
-    Container, 
-    Row, 
-    Col, 
-    Card,
-    Form,
-    Button,
-    ButtonGroup
-  } from 'react-bootstrap';
 import NavBar from 'modules/components/NavBar';
 import Footer from 'modules/components/Footer';
-import FooterWrapper from 'modules/components/FooterWrapper';
 import ProgressIndicator from 'modules/components/ProgressIndicator';
 
 
@@ -37,23 +27,14 @@ score seems to always result to neutral...
 
 const QuizHeader = () => {
   return (
-    <Container className="quiz-header mt-5">
-      <Row>
-        <Col>
-          <h2 className="text-center">{ QUESTIONS_ALL[0].title }</h2>
-        </Col>
-      </Row>
-    </Container>
-
-    
+    <h2 className="text-center">{ QUESTIONS_ALL[0].title }</h2>
   )
 }
 
 
 const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
   return (
-    <Container fluid="md" className="question_list"> 
-      <Form>
+      <form>
       {
         QUESTIONS.map(question => {
           const questionData = {
@@ -62,8 +43,7 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
             options: question.options
           };
           return (
-              <Row className="mt-4" key={`question-item-row_${question._id}`} >
-                <Col>
+              <div className="mt-4" key={`question-item-row_${question._id}`} >
                   <QuestionItem
                     questionData={questionData}
                     updateSelection={updateState.selection}
@@ -71,13 +51,11 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
                     isActive={activeQuestionIndex === question._id}
                     currentSelections={currentSelections}
                     /> 
-                </Col>
-              </Row>
+              </div>
           )     
         })
       }
-      </Form>
-    </Container>
+      </form>
   );
 }
 
@@ -86,8 +64,6 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   const shuffledOptions = shuffle(options);
 
   const handleOptionSelect = (e) => {
-    console.log("selected id: ", id);
-    console.log("selected value: ", e.target.value);
     updateSelection(
       id,
       e.target.value,
@@ -105,39 +81,38 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   }
 
   return (
-    <Card className="question_item" data-isactive={isActive}>
-    <Card.Body>
-      <Card.Title>
-        {title}
-      </Card.Title>
+    <>
+    <div className="question_item" data-isactive={isActive}>
+        <h2>{title}</h2>
 
       {
         shuffledOptions.map( (opt, i) => {
           return (
-            <Form.Check
-              key={`question_item_option_${i}`} 
-              inline 
-              type="radio" 
-              className="question_item_option" 
-              id={`question_item_option_${i}`} 
-              label={opt.title}
-              onClick={handleOptionSelect}
-              name={title}
-              value={opt.weight}   
-              />
+            <>
+              <label for={`question_item_option_${i}`}>{opt.title}</label>
+              <input
+                key={`question_item_option_${i}`} 
+                inline 
+                type="radio" 
+                className="question_item_option" 
+                id={`question_item_option_${i}`} 
+                label={opt.title}
+                onClick={handleOptionSelect}
+                name={title}
+                value={opt.weight}   
+                />
+              </>
           )
         })
       }
-    </Card.Body> 
+    </div> 
 
     <QuizItemNav 
       id={id}
       handleButtonClick={handleButtonClick}
       currentSelections={currentSelections}
       isActive={isActive} />
-
-    </Card>
-
+    </>
   )
 }
 
@@ -149,20 +124,20 @@ const QuizItemNav = ({id, handleButtonClick, currentSelections, isActive}) => {
 
 if (isActive && currentSelections.length) {
     return (
-      <Card.Body>
-        <ButtonGroup aria-label="go to previous and or next question">
+      <>
+        <div aria-label="go to previous and or next question">
           {
             id !== 0
-              ?  <Button data-direction="back" onClick={handleButtonClick}>Go back</Button> 
+              ?  <button data-direction="back" onClick={handleButtonClick}>Go back</button> 
               : ""
           }
           {
             id !== QUESTIONS.length - 1 && currentSelections[id]
-            ?  <Button data-direction="next" onClick={handleButtonClick}>Next</Button>
+            ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
             : ""
           }
-          </ButtonGroup>
-        </Card.Body>
+          </div>
+        </>
     )
   } 
   return null;
@@ -172,44 +147,26 @@ if (isActive && currentSelections.length) {
 
 const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
-    <Container className="my-4">
-    <Row>
-      <Col>
-        <Card>
-          <Card.Body>
-            <Card.Title>
-              Get Results
-            </Card.Title>
-            <ButtonGroup aria-label="go to previous and or next question">
-              {
-                showBackBtn
-                ? <Button data-action="back" onClick={handleButtonClick}>Go Back</Button>
-                : "" 
-              }
-              <Button data-action="results" onClick={handleButtonClick}>Get Results</Button>
-            </ButtonGroup>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  </Container>
+    <>
+      <h2>Get Results</h2>
+      <div aria-label="go to previous and or next question">
+        {
+          showBackBtn
+          ? <button data-action="back" onClick={handleButtonClick}>Go Back</button>
+          : "" 
+        }
+        <button data-action="results" onClick={handleButtonClick}>Get Results</button>
+      </div>
+    </>
   )
 }
 
 const Results = ({result}) => {
   return (
-    <Container className="my-4">
-    <Row>
-      <Col>
-        <Card>
-          <Card.Body>
-            <Card.Title>Result</Card.Title>
-            <Card.Text>{result}</Card.Text>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-    </Container>
+    <>
+      <h2>Result</h2>
+      <div>{result}</div>
+    </>
   )
 };
 
@@ -361,10 +318,7 @@ const Quiz = () => {
             ? <Results result={interpretScore()}/>
             : ""
           }  
-          <FooterWrapper>
             <Footer />
-          </FooterWrapper>
-    
       </>
 
   );
