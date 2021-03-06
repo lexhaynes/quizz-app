@@ -4,4 +4,4 @@ The purpose of this quiz is to drive users to books written by Black authors - l
 
 ## Quiz main question
 
-What book written by a black author should I read based on my mood?
+What book written by a Black author should I read based on my mood?
