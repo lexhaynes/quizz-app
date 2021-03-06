@@ -1,7 +1,7 @@
 # Quiz App: Book Recommendation
 
-The purpose of this quiz is to drive users to one of several bookshop.org (or other non-Amazon boostore) links for books written by Black authors
+The purpose of this quiz is to drive users to books written by Black authors - links drive to bookshop.org or other non-amazon, local bookstore
 
 ## Quiz main question
 
-What book written by a black author should I read based on my mood? (W links to bookshop.org at the end)
+What book written by a black author should I read based on my mood?
