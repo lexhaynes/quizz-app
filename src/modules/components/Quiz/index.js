@@ -13,10 +13,7 @@ import ProgressIndicator from 'modules/components/ProgressIndicator';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- tailwind styling
-- Nav Dropdown - add animation on open/close; add a test
 - make responsive
-- add icons!
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results uniquely
@@ -28,9 +25,9 @@ score seems to always result to neutral...
 */
 
 
-const QuizHeader = () => {
+const QuizTitle = () => {
   return (
-    <div className="quiz-header">
+    <div className="quiz-title">
       <h1 className="text-center">{ QUESTIONS_ALL[0].title }</h1>
     </div>
     
@@ -295,10 +292,15 @@ const Quiz = () => {
 
   return (
         <div className="quiz">
-        <NavBar />
-        <div className="container">
+
+        <header className="header sticky top-0 shadow-sm">
+          <NavBar />
           <ProgressIndicator progress={calcProgress()} />
-          <QuizHeader />
+        </header>
+ 
+
+        <div className="container">
+          <QuizTitle />
           <QuestionList 
             activeQuestionIndex={currentActiveIndex}
             updateState={updateState} 

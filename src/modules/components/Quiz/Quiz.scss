@@ -2,23 +2,27 @@
 .quiz {
 }
 
+/* ====== Header ====== */
+.header {
+}
+
 /* ====== ProgressIndicator ====== */
 .progress-indicator {
 }
 
 /* ====== QuizHeader ====== */
-.quiz-header {
-  @apply text-2xl font-medium;
+.quiz-title {
+  @apply my-6 text-2xl font-medium;
 }
 
 /* ====== QuestionList ====== */
 .question-list {
-  @apply m-4;
+  @apply space-y-7;
 }
 
 /* ====== QuestionItem ====== */
 .question-item {
-  @apply my-4 p-8 rounded-sm shadow-md;
+  @apply p-8 rounded-sm shadow-md;
 
   &[data-isactive="true"] {
     @apply bg-gray-50 text-gray-700 

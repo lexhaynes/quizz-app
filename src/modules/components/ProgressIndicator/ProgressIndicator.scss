@@ -1,1 +1,22 @@
 /* progress indicator */
+
+.progress-indicator {
+  .progress-indicator-track {
+    @apply overflow-hidden h-2 mb-4 text-xs flex bg-gray-200;
+
+    .progress-indicator-fill {
+      @apply shadow-none 
+            flex flex-col 
+            text-center 
+            whitespace-nowrap 
+            text-white 
+            justify-center 
+            bg-indigo-500
+             w-full
+             transform
+             origin-left
+             scale-x-0
+             transition-transform;
+    }
+  }
+}

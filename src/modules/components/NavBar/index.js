@@ -41,7 +41,6 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <>
         <nav className="nav-bar">
             <div className="container">
                 <div className="nav-left">
@@ -55,6 +54,5 @@ export default function NavBar() {
                 
             </div>
         </nav>
-        </>
     )
 }
