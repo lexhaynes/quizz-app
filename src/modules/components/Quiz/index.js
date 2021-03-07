@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-import {useState, useEffect} from 'react';
 import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
 import MOODS from 'modules/data/moods.json';
@@ -15,6 +14,7 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
 - tailwind styling
+- Nav Dropdown - close dropdown when anywhere outside the dropdown is clicked
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results uniquely
