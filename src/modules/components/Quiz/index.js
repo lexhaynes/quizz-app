@@ -6,6 +6,7 @@ import MOODS from 'modules/data/moods.json';
 import './Quiz.scss';
 import NavBar from 'modules/components/NavBar';
 import Footer from 'modules/components/Footer';
+import Button from 'modules/components/Button';
 import ProgressIndicator from 'modules/components/ProgressIndicator';
 
 
@@ -16,6 +17,7 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 - make responsive
 - add images to QuestionItem selections
 - style QuestionItems uniquely
+- style results button
 - style results uniquely
 - make the header + footer make sense w real links
 - consider changing the scoring to be based on frequency of certain type (eg A, B, C, D) vs cumulative score, since the 
@@ -148,10 +150,10 @@ const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
       <h2>Get Results</h2>
         {
           showBackBtn
-          ? <button data-action="back" onClick={handleButtonClick}>Go Back</button>
+          ? <Button data-action="back" onClick={handleButtonClick}>Go Back</Button>
           : "" 
         }
-        <button data-action="results" onClick={handleButtonClick}>Get Results</button>
+        <Button data-action="results" onClick={handleButtonClick}>Get Results</Button>
     </div>
   )
 }
