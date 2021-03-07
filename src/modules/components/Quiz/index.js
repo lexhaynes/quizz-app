@@ -14,7 +14,7 @@ import ProgressIndicator from 'modules/components/ProgressIndicator';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- theme in a brutalist style 
+- tailwind styling
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results uniquely
@@ -29,7 +29,7 @@ score seems to always result to neutral...
 const QuizHeader = () => {
   return (
     <div className="quiz-header">
-      <h2 className="text-center">{ QUESTIONS_ALL[0].title }</h2>
+      <h1 className="text-center">{ QUESTIONS_ALL[0].title }</h1>
     </div>
     
   )
@@ -84,7 +84,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
 
   return (
     <div className="question-item" data-isactive={isActive}>
-        <h2>{title}</h2>
+        <div className="question-item-title">{title}</div>
 
       {
         shuffledOptions.map( (opt, i) => {

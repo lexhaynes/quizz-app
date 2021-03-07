@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from 'modules/components/Button';
 import NAVIGATION from 'modules/data/navigation.json';
 import './NavBar.scss'
 
@@ -31,7 +32,7 @@ const LinkDisplay = ({data}) => {
                     {
                         dropdown.map( (nav, i) => {
                             const { href, name } = nav;
-                            return <a href={href} key={`nav-dropdown-link_${i}`}>{name}</a>
+                            return <Link to={href} key={`nav-dropdown-link_${i}`}>{name}</Link>
                         })
                     }
                 </span>
@@ -47,11 +48,18 @@ export default function NavBar() {
     return (
         <nav className="nav-bar">
             <div className="container">
-                <Link to={logoHref}>{logo}</Link>
-                <LinkDisplay data={NAVIGATION.left} />
-                <button>Get Updates!</button>
+                <div className="nav-left">
+                    <Link className="logo" to={logoHref}>{logo}</Link>
+                </div>
+                
+                
+
+                <div className="nav-right">
+                    <LinkDisplay data={NAVIGATION.left} />
+                    <Button variant="primary">Get Updates!</Button>
+                </div>
+                
             </div>
-       
         </nav>
     )
 }

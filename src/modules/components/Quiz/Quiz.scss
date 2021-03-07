@@ -4,7 +4,22 @@
 
 /* ====== NavBar ====== */
 .nav-bar {
-  @apply bg-white p-4 shadow-sm;
+  @apply bg-white p-4 shadow-sm font-medium;
+
+  .container {
+    @apply flex flex-row justify-between items-center;
+
+    .nav-left {
+    }
+    .nav-right {
+    }
+
+    .logo {
+      @apply text-3xl font-extrabold text-indigo-500;
+    }
+    .button {
+    }
+  }
 }
 
 /* ====== ProgressIndicator ====== */
@@ -13,6 +28,7 @@
 
 /* ====== QuizHeader ====== */
 .quiz-header {
+  @apply text-2xl font-medium;
 }
 
 /* ====== QuestionList ====== */
@@ -22,22 +38,23 @@
 
 /* ====== QuestionItem ====== */
 .question-item {
+  @apply my-4 p-8 rounded-sm shadow-md;
+
   &[data-isactive="true"] {
-    border: solid red 1px;
-    cursor: pointer;
-    pointer-events: auto;
-    color: #000;
+    @apply bg-gray-50 text-gray-700 
+    pointer-events-auto
+    cursor-pointer;
   }
   &[data-isactive="false"] {
-    color: #ccc;
-    cursor: default;
-    pointer-events: none;
-    button {
-      opacity: 0.5;
-    }
+    @apply opacity-25 pointer-events-none cursor-default;
   }
+
+  .question-item-title {
+    @apply text-2xl font-semibold;
+  }
+
   .question-item-option {
-    cursor: pointer;
+    @apply cursor-pointer;
   }
 }
 
@@ -55,5 +72,8 @@
 
 /* ====== Footer ====== */
 .footer {
-  @apply bg-gray-300 p-4 mt-6;
+  @apply bg-gray-100 
+    p-4 
+    mt-6
+  text-gray-600;
 }
