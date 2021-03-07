@@ -14,7 +14,7 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
 - tailwind styling
-- Nav Dropdown - add animation on open/close
+- Nav Dropdown - add animation on open/close; add a test
 - make responsive
 - add icons!
 - add images to QuestionItem selections

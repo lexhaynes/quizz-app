@@ -30,7 +30,7 @@ const LinkDisplay = ({data}) => {
             }
             {
                 dropdown.length > 0
-                ? <Dropdown data={dropdown} triggerTitle="More Quizzes" />  
+                ? <Dropdown data={dropdown} title="More Quizzes" />  
                 : ""
             }
         </>
@@ -50,7 +50,7 @@ export default function NavBar() {
                 
                 <div className="nav-right">
                     <LinkDisplay data={NAVIGATION.left} />
-                    <Button variant="primary">Get Updates!</Button>
+                    <Button variant="primary" className="ml-2">Get Updates!</Button>
                 </div>
                 
             </div>
