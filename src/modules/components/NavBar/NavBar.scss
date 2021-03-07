@@ -10,6 +10,7 @@
     .nav-left {
     }
     .nav-right {
+      @apply flex flex-row justify-between;
     }
 
     .logo {

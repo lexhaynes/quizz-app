@@ -30,7 +30,7 @@ const LinkDisplay = ({data}) => {
             }
             {
                 dropdown.length > 0
-                ? <Dropdown data={dropdown} title="More Quizzes" />  
+                ? <Dropdown data={dropdown} triggerTitle="More Quizzes" />  
                 : ""
             }
         </>
