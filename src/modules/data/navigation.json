@@ -3,7 +3,7 @@
         "name": "Quizz",
         "href": "/"
     },
-    "left": [
+    "links": [
         {
             "name": "Quiz 1",
             "href": "/link1"

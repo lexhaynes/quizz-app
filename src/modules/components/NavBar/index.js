@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Menu } from 'heroicons-react';
 import Button from 'modules/components/Button';
 import Dropdown from 'modules/components/Dropdown';
 import NAVIGATION from 'modules/data/navigation.json';
-import './NavBar.scss'
+import './NavBar.scss';
 
 const DROPDOWN_THRESHOLD = 0; //min amount of items before dropdown is displayed
 const logo = NAVIGATION.logo.name;
@@ -41,18 +42,50 @@ const LinkDisplay = ({data}) => {
 
 export default function NavBar() {
     return (
-        <nav className="nav-bar">
+        //mobile-first
+        <nav className="navbar">
+             <div className="nav-left">
+                <Link className="logo" to={logoHref}>{logo}</Link>
+            </div>
+
+            <div className="nav-right">  
+                <Button>
+                    <Menu />
+                </Button>
+            </div>
+
+            <div className="expanded block">
+                {
+                    NAVIGATION.links.map((nav, i) => {
+                        return (
+                            <span className="block px-4 py-2 text-sm text-gray-700 
+                hover:bg-gray-100 hover:text-gray-900;" key={`nav-link_${i}`}>
+                                <Link to={nav.href}>{nav.name}</Link>
+                            </span>
+                        )
+                    })
+                }
+
+                <div className="hr" />
+                <Button variant="primary">Get Updates!</Button>
+            </div>
+
+
+        </nav>
+
+       /*  <nav className="nav-bar">
             <div className="container">
+
                 <div className="nav-left">
                     <Link className="logo" to={logoHref}>{logo}</Link>
                 </div>
                 
-                <div className="nav-right">
-                    <LinkDisplay data={NAVIGATION.left} />
-                    <Button variant="primary" className="ml-2">Get Updates!</Button>
+                <div className="nav-right">  
+                    <LinkDisplay data={NAVIGATION.links} />
+                    <Button classList="ml-2" variant="primary">Get Updates!</Button>
                 </div>
                 
             </div>
-        </nav>
+        </nav> */
     )
 }

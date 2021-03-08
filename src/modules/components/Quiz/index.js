@@ -14,7 +14,9 @@ import ProgressIndicator from 'modules/components/ProgressIndicator';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- make responsive
+- make responsive - 
+  turn right side of nav into hamburger dropdown by default
+\
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results button

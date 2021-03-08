@@ -61,3 +61,11 @@
     mt-6
   text-gray-600;
 }
+
+/* general utilities */
+.hr {
+  height: 1px;
+  @apply bg-gray-200
+  mb-3 mt-1
+  w-full;
+}
