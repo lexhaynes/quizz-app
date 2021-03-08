@@ -240,9 +240,11 @@ const Quiz = () => {
     calcProgress: return the completion of the quiz as a percemt
   */
   const calcProgress = () => {
-    const completedQuestions = selections.length;
-    const totalQuestions = QUESTIONS.length;
-    return Math.floor(completedQuestions / totalQuestions * 100);
+    /* logic based on num completed questions, even if user goes back to prev question */
+    /* return Math.floor(selections.length / QUESTIONS.LENGTH * 100); */
+
+    /* logic based on current active index, whether or not user has completed successive questions */
+    return currentActiveIndex / QUESTIONS.length * 100;
   }
 
   /*
