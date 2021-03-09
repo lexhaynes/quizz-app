@@ -4,16 +4,6 @@
 .navbar {
   @apply bg-white p-3 font-medium;
 
-  .container {
-    @apply flex flex-row justify-between items-center;
-  }
-
-  .nav-left {
-  }
-  .nav-right {
-    @apply flex flex-row justify-between items-center;
-  }
-
   .logo {
     @apply text-3xl font-extrabold text-indigo-500;
   }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
@@ -14,9 +14,7 @@ import ProgressIndicator from 'modules/components/ProgressIndicator';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- make responsive - 
-  turn right side of nav into hamburger dropdown by default
-\
+- scroll to current active question
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results button
@@ -38,7 +36,7 @@ const QuizTitle = () => {
   )
 }
 
-const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => {
+const QuestionList = ({activeQuestionIndex, updateState, currentSelections, currentRef, scrollToActive}) => {
   return (
       <div className="question-list">
       {
@@ -56,6 +54,8 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
                     updateActiveIndex={updateState.activeIndex}
                     isActive={activeQuestionIndex === question._id}
                     currentSelections={currentSelections}
+                    currentRef={currentRef}
+                    scrollToActive={scrollToActive}
                     /> 
           )     
         })
@@ -64,11 +64,12 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections}) => 
   );
 }
 
-const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections}) => {
+const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections, currentRef, scrollToActive}) => {
   const {id, title, options} = questionData;
   const shuffledOptions = shuffle(options);
 
   const handleOptionSelect = (e) => {
+    scrollToActive();
     updateSelection(
       id,
       e.target.value,
@@ -78,15 +79,16 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   const handleButtonClick = (e) => {
     const { direction } = e.target.dataset;
     if (direction === "back") {
-      updateActiveIndex.decrement()
+      updateActiveIndex.decrement();
     } else {
       updateActiveIndex.increment();
     } 
+    //need to scroll back here, but state update is async!!!
     e.preventDefault();
   }
 
   return (
-    <div className="question-item" data-isactive={isActive}>
+    <div className="question-item" data-isactive={isActive} ref={isActive ? currentRef : null}>
         <div className="question-item-title">{title}</div>
 
       {
@@ -176,6 +178,14 @@ const Quiz = () => {
   const [showComplete, setShowComplete] = useState(false);
   const [showCompleteBackBtn, setShowCompleteBackBtn] = useState(true);
   const [showResults, setShowResults] = useState(false);
+
+  const currentActiveQuestionRef = useRef(null);
+  const executeScroll = () => {
+    console.log("scroll to active: ", currentActiveQuestionRef.current);
+    currentActiveQuestionRef.current.scrollIntoView();    
+  }
+  // run this function from an event handler or an effect to execute scroll 
+
 /*
   shape of selection state:
   [
@@ -195,7 +205,11 @@ const Quiz = () => {
     if (selections.length === QUESTIONS.length) {
       setShowComplete(true);
     }
-  }, [selections]);
+
+    console.log("state update");
+    //executeScroll();
+
+  }, [selections, currentActiveIndex]);
 
   /* state update functions 
     activeIndex (function): update the activeIndex state with the user's selection
@@ -311,6 +325,8 @@ const Quiz = () => {
             activeQuestionIndex={currentActiveIndex}
             updateState={updateState} 
             currentSelections={selections}
+            currentRef={currentActiveQuestionRef}
+            scrollToActive={executeScroll}
             />
             {
               showComplete
