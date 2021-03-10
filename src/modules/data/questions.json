@@ -13,28 +13,8 @@
                 "weight": 10
             },
             {
-                "title": "pink",
-                "weight": 7
-            },
-            {
-                "title": "orange",
-                "weight": 9
-            },
-            {
-                "title": "yellow",
-                "weight": 10
-            },
-            {
                 "title": "green",
                 "weight": 7
-            },
-            {
-                "title": "blue",
-                "weight": 6
-            },
-            {
-                "title": "purple",
-                "weight": 6
             },
             {
                 "title": "grey",
@@ -52,49 +32,16 @@
         "title": "Pick an animal",
         "options": [
             {
-                "title": "lion",
-                "weight": 10
-            },
-            {
-                "title": "elephant",
-                "weight": 10
-            },
-            {
                 "title": "condor",
                 "weight": 9
-            },
-     
-            {
-                "title": "horse",
-                "weight": 8
-            },
-            {
-                "title": "dolphin",
-                "weight": 7
             },
             {
                 "title": "shark",
                 "weight": 7
             },
             {
-                "title": "fox",
-                "weight": 6
-            },
-            {
-                "title": "wild dog",
-                "weight": 5
-            },
-            {
                 "title": "komodo dragon",
                 "weight": 4
-            },
-            {
-                "title": "crow",
-                "weight": 3
-            },
-            {
-                "title": "giant squid",
-                "weight": 2
             },
             {
                 "title": "angler fish",
@@ -110,26 +57,6 @@
             {
                 "title": "the beach",
                 "weight": 10
-            },
-            {
-                "title": "the woods",
-                "weight": 7
-            },
-            {
-                "title": "an old forest",
-                "weight": 9
-            },
-            {
-                "title": "a flowery meadow",
-                "weight": 10
-            },
-            {
-                "title": "a waterfall",
-                "weight": 7
-            },
-            {
-                "title": "the desert",
-                "weight": 6
             },
             {
                 "title": "the arctic tundra",
@@ -151,31 +78,11 @@
         "title": "Pick a stone",
         "options": [
             {
-                "title": "rose quartz",
-                "weight": 10
-            },
-            {
-                "title": "lapis lazuli",
-                "weight": 7
-            },
-            {
                 "title": "turquoise",
                 "weight": 9
             },
             {
-                "title": "amethyst",
-                "weight": 10
-            },
-            {
-                "title": "yellow jasper",
-                "weight": 7
-            },
-            {
-                "title": "malachite",
-                "weight": 6
-            },
-            {
-                "title": "carnellian",
+                "title": "jasper",
                 "weight": 6
             },
             {
@@ -198,23 +105,11 @@
                 "weight": 10
             },
             {
-                "title": "a chariot wheel",
-                "weight": 7
-            },
-            {
-                "title": "the moon",
-                "weight": 9
-            },
-            {
                 "title": "a manhole",
                 "weight": 3
             },
             {
                 "title": "a clock face",
-                "weight": 6
-            },
-            {
-                "title": "an egg",
                 "weight": 5
             },
             {
@@ -233,28 +128,8 @@
                 "weight": 10
             },
             {
-                "title": "Kuan Yin",
-                "weight": 9
-            },
-            {
-                "title": "Aphrodite",
-                "weight": 8
-            },
-            {
                 "title": "Ixchel",
                 "weight": 7
-            },
-            {
-                "title": "Mary",
-                "weight": 6
-            },
-            {
-                "title": "Oshun",
-                "weight": 5
-            },
-            {
-                "title": "Athena",
-                "weight": 4
             },
             {
                 "title": "Kali",
@@ -263,10 +138,6 @@
             {
                 "title": "Eris",
                 "weight": 2
-            },
-            {
-                "title": "Isis",
-                "weight": 1
             }
         ]
     }, 
@@ -276,24 +147,12 @@
         "title": "Pick a part of the body",
         "options": [
             {
-                "title": "the top of the head",
-                "weight": 10
-            },
-            {
                 "title": "the eyes",
                 "weight": 9
             },
             {
-                "title": "the heart",
-                "weight": 8
-            },
-            {
                 "title": "the hands",
                 "weight": 7
-            },
-            {
-                "title": "the ears",
-                "weight": 5
             },
             {
                 "title": "the ribcage",
@@ -315,20 +174,8 @@
                 "weight": 10
             },
             {
-                "title": "sunflower",
-                "weight": 9
-            },
-            {
-                "title": "easter lily",
-                "weight": 8
-            },
-            {
                 "title": "marigold",
                 "weight": 7
-            },
-            {
-                "title": "hydrangea",
-                "weight": 5
             },
             {
                 "title": "yarrow",
@@ -348,18 +195,6 @@
             {
                 "title": "caspian tiger",
                 "weight": 10
-            },
-            {
-                "title": "Pyrenean Ibex",
-                "weight": 9
-            },
-            {
-                "title": "the dodo",
-                "weight": 8
-            },
-            {
-                "title": "Tazmanian Tiger",
-                "weight": 7
             },
             {
                 "title": "passenger pigeon",
@@ -385,32 +220,12 @@
                 "weight": 10
             },
             {
-                "title": "centaur",
-                "weight": 9
-            },
-            {
-                "title": "mermaid",
-                "weight": 8
-            },
-            {
-                "title": "loch ness monster",
-                "weight": 7
-            },
-            {
                 "title": "gnome",
                 "weight": 5
             },
             {
-                "title": "minotaur",
-                "weight": 4
-            },
-            {
                 "title": "manticore",
                 "weight": 3
-            },
-            {
-                "title": "Pontianak",
-                "weight": 2
             },
             {
                 "title": "redcap",
@@ -418,8 +233,5 @@
             }
         ]
     }
-    
-    
-    
 
 ]

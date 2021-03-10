@@ -16,7 +16,8 @@ const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
 - add images to QuestionItem selections
-- style QuestionItems uniquely
+- add hover states to QuestionItem options
+    -make whole option selectable
 - style results button
 - style results uniquely
 - make the header + footer make sense w real links
@@ -94,7 +95,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
             shuffledOptions.map( (opt, i) => {
               return (
                 <div className="question-item-option" key={`question-item-option_${i}`} >
-                  <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
+                  <div className="question-item-image" ></div>
                   <input
                     type="radio" 
                     id={`question-item-option_${i}`} 
@@ -103,6 +104,8 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
                     name={title}
                     value={opt.weight}   
                     />
+                   <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
+
                   </div>
               )
             })
@@ -133,7 +136,7 @@ if (isActive && currentSelections.length) {
       <div className="question-item-nav">
           {
             id !== 0
-              ?  <Button data-direction="back" onClick={handleButtonClick}>
+              ?  <Button variant="white" classList="mr-1" data-direction="back" onClick={handleButtonClick}>
                 <span className="flex pointer-events-none">
                   <ArrowCircleLeft className="fill-current text-indigo-500" /> 
                   <span className="ml-2">Back</span>
@@ -144,11 +147,10 @@ if (isActive && currentSelections.length) {
           }
           {
             id !== QUESTIONS.length - 1 && currentSelections[id]
-            ?  <Button data-direction="next" onClick={handleButtonClick}>
+            ?  <Button variant="white" classList="ml-1" data-direction="next" onClick={handleButtonClick}>
                 <span className="flex pointer-events-none">
                   <span className="mr-2">Next</span>
                   <ArrowCircleRight className="fill-current text-indigo-500" /> 
-
                 </span>
                 </Button>
             : ""
@@ -195,10 +197,16 @@ const Quiz = () => {
 
   const currentActiveQuestionRef = useRef(null);
   const scrollToActive = () => {
-    currentActiveQuestionRef.current.scrollIntoView({
-      behavior:"smooth",
-      block: "center"
-    });    
+
+    const yOffset = document.querySelector('header.header').offsetHeight * -1; //offset to accomodate for header 
+    const element = currentActiveQuestionRef.current;
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({top: y, behavior: 'smooth'});
+
+  /*   currentActiveQuestionRef.current.scrollIntoView({
+      behavior:"smooth"
+    });  */   
   }
   // run this function from an event handler or an effect to execute scroll 
 
@@ -226,8 +234,8 @@ const Quiz = () => {
 
   /* callback for after currentActiveIndex changes */
   useEffect(() => {
-    console.log("current active index has changed: " + currentActiveIndex);
-    scrollToActive();
+    if (currentActiveIndex < QUESTIONS.length) scrollToActive();
+    
   }, [currentActiveIndex])
 
   /* state update functions 
@@ -299,8 +307,6 @@ const Quiz = () => {
   */
   const interpretScore = () => {
     const score = calcScore();
-
-    console.log("score is: " + score);
     
     for (let i = 0; i < MOODS.length; i++) {
       let currentThreshold = MOODS[i].max_threshold;

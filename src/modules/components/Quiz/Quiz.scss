@@ -57,11 +57,20 @@
 }
 
 .question-item-options {
-  @apply mx-auto w-2/3 grid grid-flow-row grid-cols-3 gap-8 my-6;
+  @apply mx-auto w-5/6 grid grid-flow-row grid-cols-4 gap-8 my-6;
 
   .question-item-option {
-    @apply cursor-pointer
-     border-indigo-500 border-t-2 p-8;
+    @apply cursor-pointer capitalize rounded-sm
+   p-4 flex flex-col items-center justify-between text-center
+   hover:bg-gray-50;
+
+    label {
+      @apply mt-2 leading-5;
+    }
+
+    .question-item-image {
+      @apply w-24 h-24 bg-pink-50 rounded-md mb-3;
+    }
   }
 }
 

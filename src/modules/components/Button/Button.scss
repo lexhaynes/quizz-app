@@ -1,9 +1,18 @@
 .button {
-  @apply px-5 py-2 rounded-md shadow-sm;
+  @apply px-5 py-2 rounded-md shadow-sm transition-colors;
+
   &.primary {
     @apply bg-indigo-500 hover:bg-indigo-600 text-white;
   }
   &.link {
     @apply shadow-none rounded-none;
+  }
+  &.white {
+    @apply shadow-md hover:bg-indigo-500 hover:text-white;
+    &:hover {
+      svg {
+        @apply text-white;
+      }
+    }
   }
 }
