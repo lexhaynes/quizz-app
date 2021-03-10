@@ -2,10 +2,10 @@
 
 .progress-indicator {
   .progress-indicator-track {
-    @apply overflow-hidden h-2 mb-4 text-xs flex bg-gray-200;
+    @apply overflow-hidden h-2 mb-4 text-xs flex bg-gray-200 shadow-inner;
 
     .progress-indicator-fill {
-      @apply shadow-none 
+      @apply shadow-inner 
             flex flex-col 
             text-center 
             whitespace-nowrap 

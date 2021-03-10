@@ -76,8 +76,7 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
 
   const handleButtonClick = (e) => {
     const { direction } = e.target.dataset;
-    console.log("direction is: " + direction);
-    console.log("e is: ", e);
+
     if (direction === "back") {
       updateActiveIndex.decrement();
     } else {
@@ -94,28 +93,27 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
           {
             shuffledOptions.map( (opt, i) => {
               return (
-                <span key={`question-item-option_${i}`} >
+                <div className="question-item-option" key={`question-item-option_${i}`} >
                   <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
                   <input
                     type="radio" 
-                    className="question-item-option" 
                     id={`question-item-option_${i}`} 
                     label={opt.title}
                     onClick={handleOptionSelect}
                     name={title}
                     value={opt.weight}   
                     />
-                  </span>
+                  </div>
               )
             })
           }
         </div>
     
-    <QuestionItemNav 
-      id={id}
-      handleButtonClick={handleButtonClick}
-      currentSelections={currentSelections}
-      isActive={isActive} />
+      <QuestionItemNav 
+        id={id}
+        handleButtonClick={handleButtonClick}
+        currentSelections={currentSelections}
+        isActive={isActive} />
 
     </div> 
 
@@ -130,22 +128,33 @@ const QuestionItemNav = ({id, handleButtonClick, currentSelections, isActive}) =
 
 if (isActive && currentSelections.length) {
     return (
+      <>
+      <div className="hr" />
       <div className="question-item-nav">
           {
             id !== 0
               ?  <Button data-direction="back" onClick={handleButtonClick}>
-                  <ArrowCircleLeft className="pointer-events-none" />
+                <span className="flex pointer-events-none">
+                  <ArrowCircleLeft className="fill-current text-indigo-500" /> 
+                  <span className="ml-2">Back</span>
+                </span>
+              
                 </Button> 
               : ""
           }
           {
             id !== QUESTIONS.length - 1 && currentSelections[id]
             ?  <Button data-direction="next" onClick={handleButtonClick}>
-                <ArrowCircleRight className="pointer-events-none" />
-              </Button>
+                <span className="flex pointer-events-none">
+                  <span className="mr-2">Next</span>
+                  <ArrowCircleRight className="fill-current text-indigo-500" /> 
+
+                </span>
+                </Button>
             : ""
           }
         </div>
+        </>
     )
   } 
   return null;

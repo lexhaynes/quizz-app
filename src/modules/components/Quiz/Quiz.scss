@@ -10,6 +10,7 @@
 
 /* ====== Quiz ====== */
 .quiz {
+  @apply text-gray-700;
 }
 
 /* ====== Header ====== */
@@ -27,32 +28,40 @@
 
 /* ====== QuestionList ====== */
 .question-list {
-  @apply space-y-7;
+  @apply space-y-10;
 }
 
 /* ====== QuestionItem ====== */
 .question-item {
-  @apply p-8 rounded-sm shadow-md space-y-4;
-
-  &[data-isactive="true"] {
-    @apply bg-gray-50 text-gray-700 
-    pointer-events-auto
-    cursor-pointer;
-  }
-  &[data-isactive="false"] {
-    @apply opacity-25 pointer-events-none cursor-default;
-  }
+  @apply py-4 bg-white rounded-lg shadow-xl pointer-events-auto cursor-pointer;
+  background-color: #fefefe;
 
   .question-item-title {
-    @apply text-2xl font-semibold text-center;
+    @apply text-xl py-2 font-semibold text-center;
+  }
+
+  &[data-isactive="true"] {
+    .question-item-title {
+      @apply text-white rounded-t-lg bg-indigo-500;
+    }
+  }
+
+  &[data-isactive="false"] {
+    @apply opacity-20 bg-gray-50 shadow-none pointer-events-none cursor-default
+    bg-none text-gray-500;
+
+    .question-item-title {
+      @apply text-gray-500 bg-none;
+    }
   }
 }
 
 .question-item-options {
-  @apply mx-auto flex justify-center;
+  @apply mx-auto w-2/3 grid grid-flow-row grid-cols-3 gap-8 my-6;
 
   .question-item-option {
-    @apply cursor-pointer;
+    @apply cursor-pointer
+     border-indigo-500 border-t-2 p-8;
   }
 }
 
