@@ -14,7 +14,7 @@ import ProgressIndicator from 'modules/components/ProgressIndicator';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- scroll to current active question
+- scroll to current active question - also when clicking back
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results button
@@ -36,7 +36,7 @@ const QuizTitle = () => {
   )
 }
 
-const QuestionList = ({activeQuestionIndex, updateState, currentSelections, currentRef, scrollToActive}) => {
+const QuestionList = ({activeQuestionIndex, updateState, currentSelections, currentRef}) => {
   return (
       <div className="question-list">
       {
@@ -55,7 +55,6 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections, curr
                     isActive={activeQuestionIndex === question._id}
                     currentSelections={currentSelections}
                     currentRef={currentRef}
-                    scrollToActive={scrollToActive}
                     /> 
           )     
         })
@@ -64,12 +63,11 @@ const QuestionList = ({activeQuestionIndex, updateState, currentSelections, curr
   );
 }
 
-const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections, currentRef, scrollToActive}) => {
+const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActive, currentSelections, currentRef}) => {
   const {id, title, options} = questionData;
   const shuffledOptions = shuffle(options);
 
   const handleOptionSelect = (e) => {
-    scrollToActive();
     updateSelection(
       id,
       e.target.value,
@@ -180,9 +178,11 @@ const Quiz = () => {
   const [showResults, setShowResults] = useState(false);
 
   const currentActiveQuestionRef = useRef(null);
-  const executeScroll = () => {
-    console.log("scroll to active: ", currentActiveQuestionRef.current);
-    currentActiveQuestionRef.current.scrollIntoView();    
+  const scrollToActive = () => {
+    currentActiveQuestionRef.current.scrollIntoView({
+      behavior:"smooth",
+      block: "center"
+    });    
   }
   // run this function from an event handler or an effect to execute scroll 
 
@@ -206,10 +206,13 @@ const Quiz = () => {
       setShowComplete(true);
     }
 
-    console.log("state update");
-    //executeScroll();
+  }, [selections ]);
 
-  }, [selections, currentActiveIndex]);
+  /* callback for after currentActiveIndex changes */
+  useEffect(() => {
+    console.log("current active index has changed: " + currentActiveIndex);
+    scrollToActive();
+  }, [currentActiveIndex])
 
   /* state update functions 
     activeIndex (function): update the activeIndex state with the user's selection
@@ -326,7 +329,7 @@ const Quiz = () => {
             updateState={updateState} 
             currentSelections={selections}
             currentRef={currentActiveQuestionRef}
-            scrollToActive={executeScroll}
+            scrollToActive={scrollToActive}
             />
             {
               showComplete
