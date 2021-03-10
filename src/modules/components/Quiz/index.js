@@ -8,13 +8,13 @@ import NavBar from 'modules/components/NavBar';
 import Footer from 'modules/components/Footer';
 import Button from 'modules/components/Button';
 import ProgressIndicator from 'modules/components/ProgressIndicator';
+import { ArrowCircleRight, ArrowCircleLeft } from 'heroicons-react';
 
 
 //remove the over-arching question from the questions data array
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- scroll to current active question - also when clicking back
 - add images to QuestionItem selections
 - style QuestionItems uniquely
 - style results button
@@ -76,6 +76,8 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
 
   const handleButtonClick = (e) => {
     const { direction } = e.target.dataset;
+    console.log("direction is: " + direction);
+    console.log("e is: ", e);
     if (direction === "back") {
       updateActiveIndex.decrement();
     } else {
@@ -88,25 +90,26 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
   return (
     <div className="question-item" data-isactive={isActive} ref={isActive ? currentRef : null}>
         <div className="question-item-title">{title}</div>
-
-      {
-        shuffledOptions.map( (opt, i) => {
-          return (
-            <span key={`question-item-option_${i}`} >
-              <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
-              <input
-                type="radio" 
-                className="question-item-option" 
-                id={`question-item-option_${i}`} 
-                label={opt.title}
-                onClick={handleOptionSelect}
-                name={title}
-                value={opt.weight}   
-                />
-              </span>
-          )
-        })
-      }
+        <div className="question-item-options">
+          {
+            shuffledOptions.map( (opt, i) => {
+              return (
+                <span key={`question-item-option_${i}`} >
+                  <label htmlFor={`question-item-option_${i}`}>{opt.title}</label>
+                  <input
+                    type="radio" 
+                    className="question-item-option" 
+                    id={`question-item-option_${i}`} 
+                    label={opt.title}
+                    onClick={handleOptionSelect}
+                    name={title}
+                    value={opt.weight}   
+                    />
+                  </span>
+              )
+            })
+          }
+        </div>
     
     <QuestionItemNav 
       id={id}
@@ -130,12 +133,16 @@ if (isActive && currentSelections.length) {
       <div className="question-item-nav">
           {
             id !== 0
-              ?  <button data-direction="back" onClick={handleButtonClick}>Go back</button> 
+              ?  <Button data-direction="back" onClick={handleButtonClick}>
+                  <ArrowCircleLeft className="pointer-events-none" />
+                </Button> 
               : ""
           }
           {
             id !== QUESTIONS.length - 1 && currentSelections[id]
-            ?  <button data-direction="next" onClick={handleButtonClick}>Next</button>
+            ?  <Button data-direction="next" onClick={handleButtonClick}>
+                <ArrowCircleRight className="pointer-events-none" />
+              </Button>
             : ""
           }
         </div>
@@ -316,13 +323,13 @@ const Quiz = () => {
   return (
         <div className="quiz">
 
-        <header className="header sticky top-0 shadow-sm">
+        <header className="header sticky top-0 shadow-sm z-10">
           <NavBar />
           <ProgressIndicator progress={calcProgress()} />
         </header>
  
 
-        <div className="container">
+        <div className="container w-5/6 lg:max-w-screen-lg">
           <QuizTitle />
           <QuestionList 
             activeQuestionIndex={currentActiveIndex}

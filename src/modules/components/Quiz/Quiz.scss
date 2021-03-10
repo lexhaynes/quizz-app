@@ -32,7 +32,7 @@
 
 /* ====== QuestionItem ====== */
 .question-item {
-  @apply p-8 rounded-sm shadow-md;
+  @apply p-8 rounded-sm shadow-md space-y-4;
 
   &[data-isactive="true"] {
     @apply bg-gray-50 text-gray-700 
@@ -44,8 +44,12 @@
   }
 
   .question-item-title {
-    @apply text-2xl font-semibold;
+    @apply text-2xl font-semibold text-center;
   }
+}
+
+.question-item-options {
+  @apply mx-auto flex justify-center;
 
   .question-item-option {
     @apply cursor-pointer;
@@ -54,6 +58,7 @@
 
 /* ====== QuestionItemNav ====== */
 .question-item-nav {
+  @apply mx-auto flex flex-row justify-between max-w-max;
 }
 
 /* ====== CompleteQuiz ====== */
