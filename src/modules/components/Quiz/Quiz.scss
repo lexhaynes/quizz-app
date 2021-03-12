@@ -62,22 +62,19 @@
   .question-item-option {
     @apply cursor-pointer capitalize rounded-sm
    p-4 flex flex-col items-center justify-between text-center
-   hover:bg-gray-50;
+   hover:bg-gray-50 transition-colors;
 
     label {
       @apply mt-2 leading-5;
     }
 
     .question-item-image {
-      @apply w-24 h-24 bg-pink-50 rounded-md mb-3;
+      @apply w-24 h-24 bg-pink-50 rounded-md mb-3 shadow-sm hover:shadow-none;
     }
   }
 }
 
 /* ====== QuestionItemNav ====== */
-.question-item-nav {
-  @apply mx-auto flex flex-row justify-between max-w-max;
-}
 
 /* ====== CompleteQuiz ====== */
 .complete-quiz {
@@ -101,4 +98,14 @@
   @apply bg-gray-200
   mb-3 mt-1
   w-full;
+}
+
+.button-group {
+  @apply mx-auto flex flex-row justify-between max-w-max;
+  :first-child {
+    @apply mr-1;
+  }
+  :last-child {
+    @apply ml-1;
+  }
 }

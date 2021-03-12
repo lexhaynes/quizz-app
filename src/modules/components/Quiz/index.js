@@ -1,25 +1,32 @@
 import React, {useState, useEffect, useRef} from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
 import MOODS from 'modules/data/moods.json';
-import './Quiz.scss';
-import NavBar from 'modules/components/NavBar';
-import Footer from 'modules/components/Footer';
+
+
 import Button from 'modules/components/Button';
-import ProgressIndicator from 'modules/components/ProgressIndicator';
 import { ArrowCircleRight, ArrowCircleLeft } from 'heroicons-react';
+
+import QuizShell from 'modules/components/Quiz/QuizShell';
+
+
+import './Quiz.scss';
 
 
 //remove the over-arching question from the questions data array
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
+- add context to keep track of quiz results
 - add images to QuestionItem selections
 - add hover states to QuestionItem options
     -make whole option selectable
+    - add a little animation on select
+    - make it all "more fun"
 - style results button
-- style results uniquely
+- put results on their own page and style
 - make the header + footer make sense w real links
 - consider changing the scoring to be based on frequency of certain type (eg A, B, C, D) vs cumulative score, since the 
 score seems to always result to neutral...
@@ -133,10 +140,10 @@ if (isActive && currentSelections.length) {
     return (
       <>
       <div className="hr" />
-      <div className="question-item-nav">
+      <div className="button-group">
           {
             id !== 0
-              ?  <Button variant="white" classList="mr-1" data-direction="back" onClick={handleButtonClick}>
+              ?  <Button variant="white" data-direction="back" onClick={handleButtonClick}>
                 <span className="flex pointer-events-none">
                   <ArrowCircleLeft className="fill-current text-indigo-500" /> 
                   <span className="ml-2">Back</span>
@@ -147,7 +154,7 @@ if (isActive && currentSelections.length) {
           }
           {
             id !== QUESTIONS.length - 1 && currentSelections[id]
-            ?  <Button variant="white" classList="ml-1" data-direction="next" onClick={handleButtonClick}>
+            ?  <Button variant="white"  data-direction="next" onClick={handleButtonClick}>
                 <span className="flex pointer-events-none">
                   <span className="mr-2">Next</span>
                   <ArrowCircleRight className="fill-current text-indigo-500" /> 
@@ -167,48 +174,23 @@ if (isActive && currentSelections.length) {
 const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
     <div className="complete-quiz">
-      <h2>Get Results</h2>
-        {
+      <h2 className="quiz-title text-center">Get Results</h2>
+      <div className="container">
+      <div className="button-group">
+      {
           showBackBtn
-          ? <Button data-action="back" onClick={handleButtonClick}>Go Back</Button>
+          ? <Button variant="primary" data-action="back" onClick={handleButtonClick}>Go Back</Button>
           : "" 
         }
-        <Button data-action="results" onClick={handleButtonClick}>Get Results</Button>
+        <Button variant="primary" data-action="results" onClick={handleButtonClick}>Get Results</Button>
+      </div>
+
+      </div>
+
     </div>
   )
 }
 
-const QuizResults = ({result}) => {
-  return (
-    <div className="quiz-results">
-      <h2>Result</h2>
-      <div>{result}</div>
-    </div>
-  )
-};
-
-
-const Quiz = () => {
-  const [selections, setSelections] = useState([]);
-  const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-  const [showComplete, setShowComplete] = useState(false);
-  const [showCompleteBackBtn, setShowCompleteBackBtn] = useState(true);
-  const [showResults, setShowResults] = useState(false);
-
-  const currentActiveQuestionRef = useRef(null);
-  const scrollToActive = () => {
-
-    const yOffset = document.querySelector('header.header').offsetHeight * -1; //offset to accomodate for header 
-    const element = currentActiveQuestionRef.current;
-    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-    window.scrollTo({top: y, behavior: 'smooth'});
-
-  /*   currentActiveQuestionRef.current.scrollIntoView({
-      behavior:"smooth"
-    });  */   
-  }
-  // run this function from an event handler or an effect to execute scroll 
 
 /*
   shape of selection state:
@@ -220,6 +202,26 @@ const Quiz = () => {
     }
   ]
   */
+const Quiz = () => {
+  const [selections, setSelections] = useState([]);
+  const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
+  const [showComplete, setShowComplete] = useState(false);
+  const [showCompleteBackBtn, setShowCompleteBackBtn] = useState(true);
+
+  let history = useHistory();
+
+  const getResults = () => history.push("/results");
+
+  const currentActiveQuestionRef = useRef(null);
+
+  const scrollToActive = () => {
+    const yOffset = document.querySelector('header.header').offsetHeight * -1; //offset to accomodate for header 
+    const element = currentActiveQuestionRef.current;
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({top: y, behavior: 'smooth'});
+  }
+
 
   /*  this is a callback run after state is updated, since setState runs async checking the state might yield inaccurate result! 
       check if all the questions have been answered
@@ -234,8 +236,7 @@ const Quiz = () => {
 
   /* callback for after currentActiveIndex changes */
   useEffect(() => {
-    if (currentActiveIndex < QUESTIONS.length) scrollToActive();
-    
+    if (currentActiveIndex < QUESTIONS.length) scrollToActive(); 
   }, [currentActiveIndex])
 
   /* state update functions 
@@ -323,52 +324,40 @@ const Quiz = () => {
 
   const handleQuizComplete = (e) => {
     const { action } = e.target.dataset;
+
     if (action === "back") {
      //hide back button
       setShowCompleteBackBtn(false);
      //make the last item active again
      setCurrentActiveIndex(prevState => prevState - 1);
-    } else { //show results
-      setShowResults(true);
+    } else { //navigate to results
+        console.log("get results!");
+        getResults();
     }
     e.preventDefault();
   }
 
 
   return (
-        <div className="quiz">
-
-        <header className="header sticky top-0 shadow-sm z-10">
-          <NavBar />
-          <ProgressIndicator progress={calcProgress()} />
-        </header>
- 
-
-        <div className="container w-5/6 lg:max-w-screen-lg">
-          <QuizTitle />
-          <QuestionList 
-            activeQuestionIndex={currentActiveIndex}
-            updateState={updateState} 
-            currentSelections={selections}
-            currentRef={currentActiveQuestionRef}
-            scrollToActive={scrollToActive}
-            />
-            {
-              showComplete
-              ? <CompleteQuiz 
-                  showBackBtn={showCompleteBackBtn} 
-                  handleButtonClick={handleQuizComplete} 
-                  />
-              : ""
-            }
-            {
-              showResults
-              ? <QuizResults result={interpretScore()}/>
-              : ""
-            }
-        </div>
-        <Footer />
-      </div>
+      
+      <QuizShell calcProgress={calcProgress}>
+        <QuizTitle />
+        <QuestionList 
+          activeQuestionIndex={currentActiveIndex}
+          updateState={updateState} 
+          currentSelections={selections}
+          currentRef={currentActiveQuestionRef}
+          scrollToActive={scrollToActive}
+          />
+          {
+            showComplete
+            ? <CompleteQuiz 
+                showBackBtn={showCompleteBackBtn} 
+                handleButtonClick={handleQuizComplete} 
+                />
+            : ""
+          }
+      </QuizShell>
   );
 }
 
