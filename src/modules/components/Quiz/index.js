@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { shuffle } from 'modules/utils';
 import QUESTIONS_ALL from 'modules/data/questions.json';
@@ -9,8 +8,10 @@ import MOODS from 'modules/data/moods.json';
 import Button from 'modules/components/Button';
 import { ArrowCircleRight, ArrowCircleLeft } from 'heroicons-react';
 
+import AppShell from 'modules/components/App/AppShell';
 import QuizShell from 'modules/components/Quiz/QuizShell';
-
+import QuizResults from 'modules/components/Quiz/QuizResults';
+import PageTitle from 'modules/components/PageTitle'
 
 import './Quiz.scss';
 
@@ -19,30 +20,16 @@ import './Quiz.scss';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- add context to keep track of quiz results
+- style the home page
 - add images to QuestionItem selections
-- add hover states to QuestionItem options
+- QuestionItem options
     -make whole option selectable
     - add a little animation on select
-    - make it all "more fun"
-- style results button
-- put results on their own page and style
-- make the header + footer make sense w real links
-- consider changing the scoring to be based on frequency of certain type (eg A, B, C, D) vs cumulative score, since the 
-score seems to always result to neutral...
-- style the results
+- style results
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */
 
 
-const QuizTitle = () => {
-  return (
-    <div className="quiz-title">
-      <h1 className="text-center">{ QUESTIONS_ALL[0].title }</h1>
-    </div>
-    
-  )
-}
 
 const QuestionList = ({activeQuestionIndex, updateState, currentSelections, currentRef}) => {
   return (
@@ -93,9 +80,13 @@ const QuestionItem = ({questionData, updateSelection, updateActiveIndex, isActiv
     //need to scroll back here, but state update is async!!!
     e.preventDefault();
   }
+  
+  const isVisible = () => {
+    return currentSelections[id] !== undefined;
+  }
 
   return (
-    <div className="question-item" data-isactive={isActive} ref={isActive ? currentRef : null}>
+    <div className="question-item" data-isactive={isActive} data-isvisible={isVisible()} ref={isActive ? currentRef : null}>
         <div className="question-item-title">{title}</div>
         <div className="question-item-options">
           {
@@ -171,10 +162,9 @@ if (isActive && currentSelections.length) {
 }
 
 
-const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
+const EndQuiz = ({handleButtonClick, showBackBtn}) => {
   return (
-    <div className="complete-quiz">
-      <h2 className="quiz-title text-center">Get Results</h2>
+    <div className="end-quiz my-12">
       <div className="container">
       <div className="button-group">
       {
@@ -205,12 +195,9 @@ const CompleteQuiz = ({handleButtonClick, showBackBtn}) => {
 const Quiz = () => {
   const [selections, setSelections] = useState([]);
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-  const [showComplete, setShowComplete] = useState(false);
-  const [showCompleteBackBtn, setShowCompleteBackBtn] = useState(true);
-
-  let history = useHistory();
-
-  const getResults = () => history.push("/results");
+  const [showEndQuiz, setShowEndQuiz] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [showEndQuizBackBtn, setShowEndQuizBackBtn] = useState(true);
 
   const currentActiveQuestionRef = useRef(null);
 
@@ -220,6 +207,7 @@ const Quiz = () => {
     const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
     window.scrollTo({top: y, behavior: 'smooth'});
+
   }
 
 
@@ -229,15 +217,22 @@ const Quiz = () => {
   useEffect(() => {
     //check if all the questions have been answered
     if (selections.length === QUESTIONS.length) {
-      setShowComplete(true);
+      setShowEndQuiz(true);
     }
-
-  }, [selections ]);
+  }, [selections]);
 
   /* callback for after currentActiveIndex changes */
   useEffect(() => {
-    if (currentActiveIndex < QUESTIONS.length) scrollToActive(); 
+    if (currentActiveIndex < QUESTIONS.length) {
+      scrollToActive(); 
+      //also hide the previous question here perhaps?
+    }
   }, [currentActiveIndex])
+
+  /* callback for after the results are displaying */
+  useEffect(() => {
+    if (showResults) window.scrollTo({top: 0});
+  }, [showResults])
 
   /* state update functions 
     activeIndex (function): update the activeIndex state with the user's selection
@@ -278,6 +273,15 @@ const Quiz = () => {
         setCurrentActiveIndex(prevState => prevState - 1);
       }
     },
+
+    /* refresh the state to default vals*/
+    refresh: () => {
+      setSelections([]);
+      setCurrentActiveIndex(0);
+      setShowEndQuiz(false);
+      setShowResults(false);
+      setShowEndQuizBackBtn(true);
+    }
   };
 
   /* 
@@ -297,7 +301,6 @@ const Quiz = () => {
   const calcScore = () => {
     let accumulator = 0;
     if (selections.length > 0) {
-      console.log("selections: ", selections);
       selections.map(item => accumulator += item.selected_weight);
     }
     return accumulator;
@@ -327,21 +330,26 @@ const Quiz = () => {
 
     if (action === "back") {
      //hide back button
-      setShowCompleteBackBtn(false);
+      setShowEndQuizBackBtn(false);
      //make the last item active again
      setCurrentActiveIndex(prevState => prevState - 1);
-    } else { //navigate to results
-        console.log("get results!");
-        getResults();
+    } else { //display results
+      setShowResults(true);
     }
     e.preventDefault();
   }
 
-
+  if (showResults) {
+    return (
+      <AppShell>
+          <QuizResults results={interpretScore()} refreshQuiz={updateState.refresh} />
+      </AppShell>   
+    )
+  } 
   return (
       
-      <QuizShell calcProgress={calcProgress}>
-        <QuizTitle />
+      <QuizShell classList="quiz" calcProgress={calcProgress}>
+        <PageTitle title={QUESTIONS_ALL[0].title} />
         <QuestionList 
           activeQuestionIndex={currentActiveIndex}
           updateState={updateState} 
@@ -350,12 +358,12 @@ const Quiz = () => {
           scrollToActive={scrollToActive}
           />
           {
-            showComplete
-            ? <CompleteQuiz 
-                showBackBtn={showCompleteBackBtn} 
-                handleButtonClick={handleQuizComplete} 
-                />
-            : ""
+            showEndQuiz 
+            ? <EndQuiz 
+              showBackBtn={showEndQuizBackBtn} 
+              handleButtonClick={handleQuizComplete} 
+              />
+          : null
           }
       </QuizShell>
   );

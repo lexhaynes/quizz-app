@@ -1,22 +1,19 @@
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import PageTitle from 'modules/components/PageTitle'
+import Button from 'modules/components/Button'
 
-const QuizResults = ({results}) => {
-    let history = useHistory();
 
-    const redirectHome = () => {
-        window.setTimeout( () => {
-            history.push("/");            
-        }, 250); 
-    }
+const QuizResults = ({results, refreshQuiz}) => {
 
-    return (
+
+return (
     <div className="quiz-results">
         <div className="container">
-          <h2 className="quiz-title">Result</h2>
-          <div>{
-              results ? results : redirectHome()
-            }</div>
+          <PageTitle title="Results" />
+          <div> { results } </div>
+          <div className="my-12">
+            <Button variant="primary" classList="mx-auto block" onClick={refreshQuiz}>Re-Take Quiz</Button>
+          </div>
         </div>  
       </div>
     )
@@ -24,6 +21,7 @@ const QuizResults = ({results}) => {
 
 QuizResults.propTypes = {
     results: PropTypes.string.isRequired,
+    refreshQuiz: PropTypes.func.isRequired
 }
 
 export default QuizResults;

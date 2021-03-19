@@ -10,40 +10,30 @@
 
 /* ====== Quiz ====== */
 .quiz {
-  @apply text-gray-700;
+  @apply text-gray-700 font-semibold;
 }
 
 /* ====== Header ====== */
 .header {
 }
 
-/* ====== ProgressIndicator ====== */
-.progress-indicator {
-}
-
-/* ====== QuizHeader ====== */
-.quiz-title {
-  @apply my-6 text-2xl font-medium;
-}
-
 /* ====== QuestionList ====== */
 .question-list {
-  @apply space-y-10;
+  @apply space-y-10 mb-16;
 }
 
 /* ====== QuestionItem ====== */
 .question-item {
-  @apply py-4 bg-white rounded-lg shadow-xl pointer-events-auto cursor-pointer;
-  background-color: #fefefe;
+  @apply py-4 rounded-lg shadow-xl pointer-events-auto cursor-pointer hidden;
+  background-color: rgba(255, 255, 255, 1);
 
   .question-item-title {
-    @apply text-xl py-2 font-semibold text-center;
+    @apply text-xl py-2 text-center text-gray-700 font-bold;
   }
 
-  &[data-isactive="true"] {
-    .question-item-title {
-      @apply text-white rounded-t-lg bg-indigo-500;
-    }
+  &[data-isactive="true"],
+  &[data-isvisible="true"] {
+    @apply block;
   }
 
   &[data-isactive="false"] {
@@ -76,8 +66,8 @@
 
 /* ====== QuestionItemNav ====== */
 
-/* ====== CompleteQuiz ====== */
-.complete-quiz {
+/* ====== End Quiz ====== */
+.end-quiz {
 }
 
 /* ====== QuizResults ====== */
@@ -95,8 +85,8 @@
 /* general utilities */
 .hr {
   height: 1px;
-  @apply bg-gray-200
-  mb-3 mt-1
+  @apply bg-gray-100
+  mb-4 mt-1
   w-full;
 }
 

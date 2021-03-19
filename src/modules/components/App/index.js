@@ -1,14 +1,12 @@
-import React, { useState, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
   } from "react-router-dom";
 
-import QuizResults from 'modules/components/Quiz/QuizResults';
 import Quiz from 'modules/components/Quiz';
 import Home from 'modules/pages/Home';
-import AppShell from './AppShell';
 
 ///lazy load your pages
 //const Home = lazy(() => import ('modules/pages/Home'));
@@ -17,12 +15,6 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<div>Put a loading component here...</div>}>
       <Switch>
-
-        <Route path="/results">
-          <AppShell>
-            <QuizResults results={null} />
-          </AppShell>
-        </Route>
 
         <Route path="/quiz-mood">
             <Quiz />

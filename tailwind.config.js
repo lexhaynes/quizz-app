@@ -6,6 +6,10 @@ module.exports = {
     container: {
       center: true,
     },
+    scale: {
+     '0': '0',
+     '10': '.10'
+    }
   },
   variants: {
     extend: {},
