@@ -20,11 +20,11 @@ import './Quiz.scss';
 const QUESTIONS = QUESTIONS_ALL.slice(1);
 
 /* TODOS: 
-- style the home page
-- add images to QuestionItem selections
 - QuestionItem options
     -make whole option selectable
     - add a little animation on select
+- style the home page
+- add images to QuestionItem selections
 - style results
 - the repetition in the selections state of the ID field vs selections index bothers me... what if the questionID becomes alpha numeric??
 */

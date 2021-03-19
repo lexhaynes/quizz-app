@@ -6,10 +6,13 @@ module.exports = {
     container: {
       center: true,
     },
-    scale: {
-     '0': '0',
-     '10': '.10'
+    minHeight: {
+     '75vh': '75vh',
+     '78vh': '78vh',
+     '90vh': '90vh',
+     '95vh': '95vh',
     }
+    
   },
   variants: {
     extend: {},
